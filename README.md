@@ -1,105 +1,85 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# Trackle – Personal Finance & Budgeting WebApp  
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+**Trackle** is a modern personal finance tracker with **AI-powered insights**.  
+It helps you log expenses, set budgets, plan savings goals, and gain financial clarity – all without needing banks or third-party wallets.  
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+---
 
-## Features
+## Features  
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+### 1. Transaction Management  
+- Add, edit, and delete income & expenses manually.  
+- **Quick Entry**: Type `₱350 Jollibee lunch` → Trackle auto-extracts the amount & category with AI.  
 
-## Demo
+### 2. Categories & Budgets  
+- Create unlimited custom categories (Food, Rent, Subscriptions, etc.).  
+- Assign monthly budget limits per category.  
+- Visual progress bars show spending vs. budget in real time.  
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+### 3. Recurring Reminders  
+- Add recurring bills (e.g., Rent ₱5,000 every 30 days).  
+- In-app reminders for upcoming payments.  
+- Option to auto-log recurring expenses after confirmation.  
 
-## Deploy to Vercel
+### 4. Reports & Dashboards  
+- **Dashboard Summary**: total income, expenses, and balance.  
+- **Charts & Graphs**:  
+  - Pie chart → spending by category.  
+  - Line chart → income vs. expenses trend.  
+- **Net Worth Tracker**: record assets & liabilities manually.  
 
-Vercel deployment will guide you through creating a Supabase account and project.
+### 5. AI-Powered Insights (MVP-friendly)  
+- **Smart Categorization**: AI suggests categories when you log expenses.  
+- **Spending Insights**:  
+  - “You spent 40% more on food this week than last week.”  
+  - “Cutting ₱500 from subscriptions saves ₱6,000/year.”  
+- **Predictive Forecasting**: AI warns when you’re close to exceeding a budget.  
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+### 6. Goal Planning  
+- Create savings goals (e.g., ₱20k in 6 months).  
+- Track progress visually toward each goal.  
+- AI suggests a monthly savings plan (e.g., ₱3,333/month).  
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+### 7. Chat Assistant  
+- Ask plain-text financial questions such as:  
+  - “How much did I spend on transport last week?”  
+- AI responds with insights or charts.  
+- MVP implementation uses local data + lightweight AI integration.  
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+### 8. Settings & Personalization  
+- Set profile details (name, currency, theme).  
+- Manage reminders & notifications.  
+- Reset/clear all local data.  
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+---
 
-## Clone and run locally
+## Tech Stack  
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+- **Frontend**: Next.js  
+- **UI Components**: shadcn/ui + TailwindCSS  
+- **State Management**: React Context or Zustand  
+- **Charts**: Recharts or Chart.js  
+- **AI Integration**: Google Gemini API (free tier for MVP)  
+- **Database (optional upgrade)**: Supabase  
+- **Storage (MVP)**: LocalStorage (works fully offline)  
 
-2. Create a Next.js app using the Supabase Starter template npx command
+---
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+## MVP Scope  
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+- Fully functional without sign-up or external services  
+- Local-first: all data stored in browser  
+- Responsive, mobile-friendly UI built with shadcn/ui  
+- Export/Import JSON for manual backup  
+- Lightweight AI features for categorization & insights  
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+---
 
-3. Use `cd` to change into the app's directory
+## Future Enhancements  
 
-   ```bash
-   cd with-supabase-app
-   ```
+- Cloud sync with Supabase or Firebase  
+- Advanced AI financial coach (budget optimization, predictive cashflow)  
+- Multi-user accounts & shared household budgets  
+- SaaS subscription model with premium features (unlimited goals, advanced reports, AI chat)  
 
-4. Rename `.env.example` to `.env.local` and update the following:
-
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
-
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
-
-5. You can now run the Next.js local development server:
-
-   ```bash
-   npm run dev
-   ```
-
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
-
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
-
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
-
-## Feedback and issues
-
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
-
-## More Supabase examples
-
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+---
