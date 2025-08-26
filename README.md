@@ -59,27 +59,6 @@ It helps you log expenses, set budgets, plan savings goals, and gain financial c
 - **UI Components**: shadcn/ui + TailwindCSS  
 - **State Management**: React Context or Zustand  
 - **Charts**: Recharts or Chart.js  
-- **AI Integration**: Google Gemini API (free tier for MVP)  
-- **Database (optional upgrade)**: Supabase  
-- **Storage (MVP)**: LocalStorage (works fully offline)  
+- **AI Integration**: Google Gemini API
+- **Database**: Supabase  
 
----
-
-## MVP Scope  
-
-- Fully functional without sign-up or external services  
-- Local-first: all data stored in browser  
-- Responsive, mobile-friendly UI built with shadcn/ui  
-- Export/Import JSON for manual backup  
-- Lightweight AI features for categorization & insights  
-
----
-
-## Future Enhancements  
-
-- Cloud sync with Supabase or Firebase  
-- Advanced AI financial coach (budget optimization, predictive cashflow)  
-- Multi-user accounts & shared household budgets  
-- SaaS subscription model with premium features (unlimited goals, advanced reports, AI chat)  
-
----
