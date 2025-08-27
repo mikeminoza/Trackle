@@ -49,7 +49,7 @@ It helps you log expenses, set budgets, plan savings goals, and gain financial c
 ### 8. Settings & Personalization  
 - Set profile details (name, currency, theme).  
 - Manage reminders & notifications.  
-- Reset/clear all local data.  
+- Reset/clear all data.  
 
 ---
 
