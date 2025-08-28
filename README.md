@@ -57,8 +57,7 @@ It helps you log expenses, set budgets, plan savings goals, and gain financial c
 
 - **Frontend**: Next.js  
 - **UI Components**: shadcn/ui + TailwindCSS  
-- **State Management**: React Context or Zustand  
-- **Charts**: Recharts or Chart.js  
+- **State Management**: Zustand  
 - **AI Integration**: Google Gemini API
 - **Database**: Supabase  
 
