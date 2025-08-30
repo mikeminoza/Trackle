@@ -2,4 +2,4 @@ TODO
 
 1. Create database migration (supabase)
 2. Setup database types (utils/database.types.ts)
-3. 
+3. Make ICON for the system
