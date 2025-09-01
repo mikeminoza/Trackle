@@ -9,24 +9,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 interface UserMenuProps {
   isCollapsed?: boolean;
 }
 
 export function UserMenu({ isCollapsed }: UserMenuProps) {
-  const handleLogout = () => {
-    // Add logout logic here
-    console.log("[v0] Logout clicked");
+  const router = useRouter();
+  const supabase = createClient();
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+    router.push("/auth/login");
   };
 
   const handleProfile = () => {
-    // Add profile navigation logic here
     console.log("[v0] Profile clicked");
   };
 
   const handleSettings = () => {
-    // Add settings navigation logic here
     console.log("[v0] Settings clicked");
   };
 
@@ -63,7 +66,7 @@ export function UserMenu({ isCollapsed }: UserMenuProps) {
           <span>Settings</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600">
+        <DropdownMenuItem onClick={logout} className="cursor-pointer text-red-600">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Logout</span>
         </DropdownMenuItem>
