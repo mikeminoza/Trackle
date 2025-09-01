@@ -1,38 +1,30 @@
-import { redirect } from "next/navigation";
-
-import { createClient } from "@/lib/supabase/server";
-import { InfoIcon } from "lucide-react";
-import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 import { ContentHeader } from "@/components/sidebar/content-header";
+import FinancialSummary from "@/components/home/FInancialSummary";
+import SpendingChart from "@/components/home/SpendingChart";
+import IncomeExpenseChart from "@/components/home/IncomeExpenseChart";
+import BudgetProgress from "@/components/home/BudgetProgress";
+import SavingsChart from "@/components/home/SavingsChart";
 
-export default async function ProtectedPage() {
-  const supabase = await createClient();
-
-  const { data, error } = await supabase.auth.getClaims();
-  if (error || !data?.claims) {
-    redirect("/auth/login");
-  }
-
+export default async function Page() {
   return (
     <>
       <ContentHeader title="Dashboard" breadcrumbs={[]} />
 
-      <div className="flex-1 w-full flex flex-col gap-12 mt-3 px-6">
-        <div className="w-full">
-          <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
-            <InfoIcon size="16" strokeWidth={2} />
-            This is a protected page that you can only see as an authenticated user
-          </div>
-        </div>
-        <div className="flex flex-col gap-2 items-start">
-          <h2 className="font-bold text-2xl mb-4">Your user details</h2>
-          <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-            {JSON.stringify(data.claims, null, 2)}
-          </pre>
-        </div>
-        <div>
-          <h2 className="font-bold text-2xl mb-4">Next steps</h2>
-          <FetchDataSteps />
+      <div className="flex-1 w-full flex flex-col gap-4 my-6 px-6">
+        {/* dashboard kpi  */}
+        <FinancialSummary />
+        {/* charts  */}
+        <IncomeExpenseChart />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <SpendingChart />
+          <SavingsChart />
+          <BudgetProgress
+            categories={[
+              { name: "Food", spent: 3200, limit: 5000 },
+              { name: "Transport", spent: 1200, limit: 2000 },
+              { name: "Entertainment", spent: 4500, limit: 5000 },
+            ]}
+          />
         </div>
       </div>
     </>
