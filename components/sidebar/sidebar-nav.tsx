@@ -1,16 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import {
-  BarChart3,
-  CreditCard,
-  Home,
-  MessageCircle,
-  PieChart,
-  Repeat,
-  Target,
-  Wallet,
-} from "lucide-react";
+import { CreditCard, Home, MessageCircle, Target, Wallet } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -27,24 +18,9 @@ const sidebarNavItems = [
     icon: CreditCard,
   },
   {
-    title: "Categories",
-    href: "/categories",
-    icon: PieChart,
-  },
-  {
     title: "Budgets",
     href: "/budgets",
     icon: Wallet,
-  },
-  {
-    title: "Recurring Bills",
-    href: "/recurring",
-    icon: Repeat,
-  },
-  {
-    title: "Reports",
-    href: "/reports",
-    icon: BarChart3,
   },
   {
     title: "Goals",

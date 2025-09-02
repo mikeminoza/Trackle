@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface UserMenuProps {
   isCollapsed?: boolean;
@@ -23,14 +24,6 @@ export function UserMenu({ isCollapsed }: UserMenuProps) {
   const logout = async () => {
     await supabase.auth.signOut();
     router.push("/auth/login");
-  };
-
-  const handleProfile = () => {
-    console.log("[v0] Profile clicked");
-  };
-
-  const handleSettings = () => {
-    console.log("[v0] Settings clicked");
   };
 
   return (
@@ -57,13 +50,18 @@ export function UserMenu({ isCollapsed }: UserMenuProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56" side={isCollapsed ? "right" : "top"}>
-        <DropdownMenuItem onClick={handleProfile} className="cursor-pointer">
-          <User className="mr-2 h-4 w-4" />
-          <span>Profile</span>
+        <DropdownMenuItem asChild>
+          <Link href="/profile" className="flex items-center">
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleSettings} className="cursor-pointer">
-          <Settings className="mr-2 h-4 w-4" />
-          <span>Settings</span>
+
+        <DropdownMenuItem asChild>
+          <Link href="/settings" className="flex items-center">
+            <Settings className="mr-2 h-4 w-4" />
+            <span>Settings</span>
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={logout} className="cursor-pointer text-red-600">
