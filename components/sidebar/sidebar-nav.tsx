@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { CreditCard, Home, MessageCircle, Target, Wallet } from "lucide-react";
+import { CreditCard, Home, MessageCircle, Wallet } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -23,13 +23,8 @@ const sidebarNavItems = [
     icon: Wallet,
   },
   {
-    title: "Goals",
-    href: "/goals",
-    icon: Target,
-  },
-  {
     title: "AI Assistant",
-    href: "/chat",
+    href: "/ai-assistant",
     icon: MessageCircle,
   },
 ];

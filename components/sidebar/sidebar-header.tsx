@@ -19,7 +19,7 @@ export function SidebarHeader({ isCollapsed, isMobileOpen }: SidebarHeaderProps)
         {/* Text (hidden when collapsed) */}
         <span
           className={`text-sm font-semibold text-sidebar-foreground transition-all duration-200 ${
-            isCollapsed || isMobileOpen ? "hidden" : "block"
+            !isCollapsed || isMobileOpen ? "block" : "hidden"
           }`}
         >
           Trackle
