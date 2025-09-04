@@ -16,13 +16,10 @@ export function SidebarHeader({ isCollapsed, isMobileOpen }: SidebarHeaderProps)
           <Wallet className="h-4 w-4 text-sidebar-primary-foreground" />
         </div>
 
-        {/* Text (hidden when collapsed) */}
         <span
-          className={`text-sm font-semibold text-sidebar-foreground transition-all duration-200 ${
-            !isCollapsed || isMobileOpen ? "block" : "hidden"
-          }`}
+          className={`text-sm font-semibold text-sidebar-foreground transition-all duration-200`}
         >
-          Trackle
+          {(!isCollapsed || isMobileOpen) && "Trackle"}
         </span>
       </div>
     </div>

@@ -24,24 +24,30 @@ import { suggestions } from "@/constants/ai-suggestions";
 import { ChatMessage } from "@/types/ai";
 import { sendMessage } from "@/lib/gemini/ai";
 import { Response } from "@/components/response";
+import { Loader } from "@/components/ai-elements/loader";
+import { LockIcon } from "lucide-react";
 
 export default function Page() {
   const [model, setModel] = useState<string>(models[0].id);
   const [input, setInput] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   const sendChat = async (content: string) => {
+    setIsLoading(true);
     const newMessage: ChatMessage = { role: "user", content };
     const updatedMessages = [...messages, newMessage];
     setMessages(updatedMessages);
     setInput("");
 
     try {
-      const reply = await sendMessage(updatedMessages);
+      const reply = await sendMessage(updatedMessages, model);
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch (error) {
       console.error("AI request failed:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -71,6 +77,13 @@ export default function Page() {
                   </MessageContent>
                 </Message>
               ))}
+              {isLoading && (
+                <Message from="assistant">
+                  <MessageContent>
+                    <Loader />
+                  </MessageContent>
+                </Message>
+              )}
             </ConversationContent>
             <ConversationScrollButton />
           </Conversation>
@@ -97,17 +110,20 @@ export default function Page() {
                 <PromptInputModelSelectValue />
               </PromptInputModelSelectTrigger>
               <PromptInputModelSelectContent>
-                {models.map((model) => (
-                  <PromptInputModelSelectItem key={model.id} value={model.id}>
-                    {model.name}
+                {models.map((m) => (
+                  <PromptInputModelSelectItem key={m.id} value={m.id} disabled={!m.available}>
+                    <div className="flex items-center justify-between w-full">
+                      <span className={!m.available ? "text-muted-foreground" : ""}>{m.name}</span>
+                      {!m.available && <LockIcon className="w-4 h-4 text-muted-foreground ml-2" />}
+                    </div>
                   </PromptInputModelSelectItem>
                 ))}
               </PromptInputModelSelectContent>
             </PromptInputModelSelect>
             <PromptInputSubmit
               className="absolute right-1 bottom-1"
-              disabled={false}
-              status={"ready"}
+              disabled={isLoading}
+              status={isLoading ? "submitted" : "ready"}
             />
           </PromptInputToolbar>
         </PromptInput>

@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { ChatMessage } from "@/types/ai";
 
-export async function sendMessage(messages: ChatMessage[]) {
+export async function sendMessage(messages: ChatMessage[], model: string) {
   try {
-    const res = await axios.post("/api/ai", { messages });
+    const res = await axios.post("/api/ai", { messages, model });
     return res.data.reply as string;
   } catch (err) {
     if (err instanceof AxiosError) {
