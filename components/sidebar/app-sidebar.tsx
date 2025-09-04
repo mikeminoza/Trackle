@@ -51,7 +51,7 @@ export function AppSidebar({ className }: AppSidebarProps) {
           className
         )}
       >
-        <SidebarHeader isCollapsed={isCollapsed} />
+        <SidebarHeader isCollapsed={isCollapsed} isMobileOpen={isMobileOpen} />
 
         {/* Desktop Collapse Toggle */}
         <div className="hidden lg:block absolute -right-3 top-20">

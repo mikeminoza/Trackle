@@ -3,7 +3,7 @@ import FinancialSummary from "@/components/home/FInancialSummary";
 import SpendingChart from "@/components/home/SpendingChart";
 import IncomeExpenseChart from "@/components/home/IncomeExpenseChart";
 import BudgetProgress from "@/components/home/BudgetProgress";
-import SavingsChart from "@/components/home/SavingsChart";
+import CashFlowTrendChart from "@/components/home/CashFlowTrendChart";
 
 export default async function Page() {
   return (
@@ -16,8 +16,8 @@ export default async function Page() {
         {/* charts  */}
         <IncomeExpenseChart />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <CashFlowTrendChart />
           <SpendingChart />
-          <SavingsChart />
           <BudgetProgress
             categories={[
               { name: "Food", spent: 3200, limit: 5000 },
