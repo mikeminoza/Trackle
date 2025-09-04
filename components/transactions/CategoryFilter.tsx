@@ -13,7 +13,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { categories } from "@/app/constants/categories";
+import { categories } from "@/constants/categories";
 
 interface CategoryFilterProps {
   onChange?: (val: string) => void;
