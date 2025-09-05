@@ -1,63 +1,47 @@
-# Trackle – Personal Finance & Budgeting WebApp  
+# Trackle – Personal Finance & Budgeting WebApp
 
-**Trackle** is a modern personal finance tracker with **AI-powered insights**.  
-It helps you log expenses, set budgets, plan savings goals, and gain financial clarity – all without needing banks or third-party wallets.  
+Trackle is a modern personal finance tracker that helps you take control of your money.  
+Log expenses, set budgets, track savings goals, and gain financial clarity – all without connecting banks or third-party wallets.
 
 ---
 
-## Features  
+## Features
 
-### 1. Transaction Management  
-- Add, edit, and delete income & expenses manually.  
-- **Quick Entry**: Type `₱350 Jollibee lunch` → Trackle auto-extracts the amount & category with AI.  
+### Transaction Management
+- Add, edit, and delete income & expenses manually.
 
-### 2. Categories & Budgets  
-- Create unlimited custom categories (Food, Rent, Subscriptions, etc.).  
-- Assign monthly budget limits per category.  
-- Visual progress bars show spending vs. budget in real time.  
+### Budgets
+- Assign monthly budget limits per category.
+- Visual progress bars show spending vs. budget in real-time.
 
-### 3. Recurring Reminders  
-- Add recurring bills (e.g., Rent ₱5,000 every 30 days).  
-- In-app reminders for upcoming payments.  
-- Option to auto-log recurring expenses after confirmation.  
+### Recurring Reminders
+- Schedule recurring bills (e.g., Rent ₱5,000 every 30 days).
 
-### 4. Reports & Dashboards  
-- **Dashboard Summary**: total income, expenses, and balance.  
-- **Charts & Graphs**:  
-  - Pie chart → spending by category.  
-  - Line chart → income vs. expenses trend.  
-- **Net Worth Tracker**: record assets & liabilities manually.  
+### Reports & Dashboards
+- Dashboard summary: total income, expenses, and balance.
+- Category-wise breakdown for smarter spending decisions.
 
-### 5. AI-Powered Insights (MVP-friendly)  
-- **Smart Categorization**: AI suggests categories when you log expenses.  
-- **Spending Insights**:  
-  - “You spent 40% more on food this week than last week.”  
-  - “Cutting ₱500 from subscriptions saves ₱6,000/year.”  
-- **Predictive Forecasting**: AI warns when you’re close to exceeding a budget.  
+### AI-Powered Insights (MVP-friendly)
+- Spending Insights:  
+  - "You spent 40% more on food this week than last week."  
+  - "Cutting ₱500 from subscriptions saves ₱6,000/year."  
+- Predictive Forecasting: warns when you’re close to exceeding a budget.
 
-### 6. Goal Planning  
-- Create savings goals (e.g., ₱20k in 6 months).  
-- Track progress visually toward each goal.  
-- AI suggests a monthly savings plan (e.g., ₱3,333/month).  
-
-### 7. Chat Assistant  
+### Chat Assistant
 - Ask plain-text financial questions such as:  
-  - “How much did I spend on transport last week?”  
-- AI responds with insights or charts.  
-- MVP implementation uses local data + lightweight AI integration.  
+  - "How much did I spend on transport last week?"  
+- AI responds with insights using local data and Gemini AI.
 
-### 8. Settings & Personalization  
-- Set profile details (name, currency, theme).  
-- Manage reminders & notifications.  
-- Reset/clear all data.  
+### Settings & Personalization
+- Update profile details (name, currency, theme).
+- Manage reminders and notifications.
+- Option to reset or clear all data.
 
 ---
 
-## Tech Stack  
-
-- **Frontend**: Next.js  
-- **UI Components**: shadcn/ui + TailwindCSS  
-- **State Management**: Zustand  
-- **AI Integration**: Google Gemini API
-- **Database**: Supabase  
-
+## Tech Stack
+- Frontend: Next.js
+- UI Components: shadcn/ui + TailwindCSS
+- State Management: Zustand
+- AI Integration: Google Gemini API
+- Database: Supabase
