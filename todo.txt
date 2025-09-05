@@ -3,6 +3,4 @@ TODO
 1. Create database migration (supabase)
 2. Setup database types (utils/database.types.ts)
 3. Make ICON for the system
-4. Setup the Gemini's config or systems intruction
-5. Chatbot's loader and stream
-6. Change the dashboard goal chart
+4. Setup the Gemini's config or systems intruction 

@@ -6,7 +6,8 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "gen:types": "npx supabase gen types typescript --linked --schema=public > utils/database.types.ts"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -47,9 +48,9 @@
     "@radix-ui/react-use-controllable-state": "^1.2.2",
     "@supabase-cache-helpers/postgrest-react-query": "^1.13.5",
     "@supabase/ssr": "^0.7.0",
-    "@supabase/supabase-js": "^2.56.0",
+    "@supabase/supabase-js": "^2.57.0",
     "@tabler/icons-react": "^3.34.1",
-    "@tanstack/react-query": "^5.85.5",
+    "@tanstack/react-query": "^5.86.0",
     "@tanstack/react-table": "^8.21.3",
     "ai": "^5.0.30",
     "axios": "^1.11.0",
