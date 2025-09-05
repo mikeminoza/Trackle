@@ -1,4 +1,5 @@
-import { Plus, Repeat, ArrowRight } from "lucide-react";
+"use client";
+import { Plus, Repeat, ArrowRight, ChevronDownIcon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -21,8 +22,14 @@ import {
 import { Button } from "../ui/button";
 import { MotionEffect } from "../animate-ui/effects/motion-effect";
 import CategoryFilter from "../transactions/CategoryFilter";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import React from "react";
 
 export default function BudgetDialog() {
+  const [open, setOpen] = React.useState(false);
+  const [date, setDate] = React.useState<Date | undefined>(undefined);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -45,6 +52,30 @@ export default function BudgetDialog() {
           <div className="grid gap-2">
             <Label>Limit</Label>
             <Input type="number" placeholder="₱5000" />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="date" className="px-1">
+              Start Date
+            </Label>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" id="date" className="w-full justify-between font-normal">
+                  {date ? date.toLocaleDateString() : "Select date"}
+                  <ChevronDownIcon />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  captionLayout="dropdown"
+                  onSelect={(date) => {
+                    setDate(date);
+                    setOpen(false);
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="grid gap-2">
             <Label>Period</Label>
