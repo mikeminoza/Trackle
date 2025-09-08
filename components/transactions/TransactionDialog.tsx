@@ -38,7 +38,7 @@ export default function TransactionDialog() {
       <DialogTrigger asChild>
         <Button className="gap-2">
           <Plus className="h-4 w-4" />
-          <span className="hidden sm:inline">Add Transaction</span>
+          Add Transaction
         </Button>
       </DialogTrigger>
       <DialogContent>

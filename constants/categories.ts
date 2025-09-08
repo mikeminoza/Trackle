@@ -25,3 +25,9 @@ export const categories = [
   { value: "goals", label: "Goals" },
   { value: "other", label: "Other" },
 ];
+
+
+export function getCategoryLabel(value: string) {
+  const category = categories.find((c) => c.value === value);
+  return category ? category.label : value;  
+}

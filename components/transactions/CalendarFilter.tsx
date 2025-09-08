@@ -13,7 +13,7 @@ export default function CalendarFilter() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="w-40 justify-between font-normal">
+        <Button variant="outline" className="justify-between font-normal">
           {date ? date.toLocaleDateString() : "Filter by date"}
           <ChevronDownIcon className="ml-2 h-4 w-4 opacity-50" />
         </Button>
