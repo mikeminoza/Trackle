@@ -1,25 +1,12 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'; 
-import type { Database } from '@/utils/database.types';
-import { createClient } from '../supabase/client';
-
-const supabase = createClient();
+import { useMutation, useQueryClient } from '@tanstack/react-query';  
+import { createTransaction as createTransactionService} from '@/services/transaction';
+ 
 
 export function useTransaction() {
   const queryClient = useQueryClient();
 
   const createTransaction = useMutation({ 
-    mutationFn: async (
-      newTransaction: Database['public']['Tables']['transactions']['Insert']
-    ) => {
-      const { data, error } = await supabase
-        .from('transactions')
-        .insert(newTransaction)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    }, 
+    mutationFn: createTransactionService, 
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: ['transactions', data.user_id],
