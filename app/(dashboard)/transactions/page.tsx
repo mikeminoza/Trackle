@@ -1,48 +1,82 @@
 "use client";
 
 import { ContentHeader } from "@/components/sidebar/content-header";
-import { Plus, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Loader2, Plus } from "lucide-react";
 import CalendarFilter from "@/components/transactions/CalendarFilter";
 import TransactionDialog from "@/components/transactions/TransactionDialog";
 import TransactionFilter from "@/components/transactions/TransactionFilter";
 import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
 import TransactionsSkeleton from "@/components/skeletons/TransactionSkeleton";
+import TransactionSearch from "@/components/transactions/TransactionSearch";
 import { useTransactionsQuery } from "@/lib/queries/transactions/useTransactionQueries";
 import { TransactionList } from "@/components/transactions/TransactionList";
 import ErrorQueryMessage from "@/components/ErrorQueryMessage";
 import { useUser } from "@/hooks/useUser";
+import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
+import NoResults from "@/components/NoResult";
 
 export default function Page() {
-  const { data: user } = useUser();
-  const { data: transactions, isLoading, isError } = useTransactionsQuery(user?.id);
+  const { searchParams, hasFiltersApplied } = useUpdateQueryParams();
+  const filters = {
+    search: searchParams.get("query") ?? "",
+    type: (searchParams.get("type") as "all" | "income" | "expense") ?? "all",
+    category: searchParams.get("category") ?? "all",
+    minAmount: searchParams.get("minAmount") ? Number(searchParams.get("minAmount")) : undefined,
+    maxAmount: searchParams.get("maxAmount") ? Number(searchParams.get("maxAmount")) : undefined,
+    date: searchParams.get("date") ?? undefined,
+  };
 
+  const { data: user } = useUser();
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useTransactionsQuery(user?.id, filters, 15);
+
+  const transactions = data?.pages.flat() ?? [];
+
+  const filtersApplied = hasFiltersApplied([
+    "query",
+    "type",
+    "category",
+    "minAmount",
+    "maxAmount",
+    "date",
+  ]);
   return (
     <>
       <ContentHeader title="Transactions" breadcrumbs={[]} />
 
       <div className="flex-1 w-full flex flex-col my-6 px-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-8">
+          <div className="relative w-full sm:w-64">
+            <TransactionSearch />
+          </div>
+          <div className="flex items-center gap-2">
+            <CalendarFilter />
+            <TransactionFilter />
+            <TransactionDialog />
+          </div>
+        </div>
         {isLoading ? (
           <TransactionsSkeleton />
         ) : isError ? (
           <ErrorQueryMessage />
-        ) : transactions ? (
+        ) : transactions.length > 0 ? (
           <>
-            <MotionEffect slide={{ direction: "down" }} fade zoom inView delay={0.3}>
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-8">
-                <div className="relative w-full sm:w-64">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Search transactions..." className="pl-8" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <CalendarFilter />
-                  <TransactionFilter />
-                  <TransactionDialog />
-                </div>
-              </div>
-            </MotionEffect>
             <TransactionList transactions={transactions} />
+
+            {hasNextPage && (
+              <div className="mt-4 relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+                <button
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                  className="bg-background text-muted-foreground relative z-10 px-3 py-1 rounded-md hover:bg-muted/50 transition"
+                >
+                  {isFetchingNextPage ? <Loader2 className="h-4 w-4 animate-spin" /> : "View More"}
+                </button>
+              </div>
+            )}
           </>
+        ) : filtersApplied ? (
+          <NoResults message="No transactions match your filters" />
         ) : (
           <MotionEffect fade zoom slide={{ direction: "up" }} delay={0.3} inView>
             <div className="flex flex-col items-center justify-center py-20 px-6 bg-muted/30 border border-dashed rounded-2xl text-center">

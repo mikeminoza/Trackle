@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -14,14 +12,16 @@ import {
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { categories } from "@/constants/categories";
+import { useState } from "react";
 
-interface CategoryFilterProps {
-  onChange?: (val: string) => void;
-}
-
-export default function CategoryFilter({ onChange }: CategoryFilterProps) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+export default function CategoryFilter({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
 
   const selected = categories.find((c) => c.value === value);
 
@@ -49,7 +49,6 @@ export default function CategoryFilter({ onChange }: CategoryFilterProps) {
                   key={cat.value}
                   value={cat.value}
                   onSelect={(currentValue) => {
-                    setValue(currentValue);
                     setOpen(false);
                     onChange?.(currentValue);
                   }}

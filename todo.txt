@@ -1,6 +1,5 @@
 TODO
-
-1. Create database migration (supabase)
-2. Setup database types (utils/database.types.ts)
-3. Make ICON for the system
-4. Setup the Gemini's config or systems intruction 
+ 
+1. Make ICON for the system
+2. Setup the Gemini's config or systems intruction 
+3. Transaction (edit and delete)

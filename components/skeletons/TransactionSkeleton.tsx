@@ -3,18 +3,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function TransactionsSkeleton() {
   return (
     <div className="flex-1 w-full flex flex-col my-6">
-      {/* Search + Filters */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-8">
-        <div className="relative w-full sm:w-64">
-          <Skeleton className="h-10 w-full rounded-md" />
-        </div>
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-10 w-24 rounded-md" />
-          <Skeleton className="h-10 w-10 rounded-full" />
-          <Skeleton className="h-10 w-24 rounded-md" />
-        </div>
-      </div>
-
       {/* Transactions List */}
       <div className="flex flex-col">
         {Array.from({ length: 6 }).map((_, i) => (

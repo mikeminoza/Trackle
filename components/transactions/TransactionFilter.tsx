@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,11 +19,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SlidersHorizontal } from "lucide-react";
+import CategoryFilter from "./CategoryFilter";
+import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
 
 export default function TransactionFilter() {
-  const [transactionType, setTransactionType] = useState<"all" | "income" | "expense">("all");
-  const [category, setCategory] = useState("all");
-
+  const { setParam, searchParams, resetParams } = useUpdateQueryParams();
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -47,10 +44,10 @@ export default function TransactionFilter() {
           <div className="grid gap-3">
             <Label>Transaction Type</Label>
             <Select
-              value={transactionType}
-              onValueChange={(val) => setTransactionType(val as "all" | "income" | "expense")}
+              value={searchParams.get("type") ?? "all"}
+              onValueChange={(val) => setParam("type", val)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent>
@@ -64,27 +61,28 @@ export default function TransactionFilter() {
           {/* Category Filter */}
           <div className="grid gap-3">
             <Label>Category</Label>
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="food">Food</SelectItem>
-                <SelectItem value="transport">Transport</SelectItem>
-                <SelectItem value="shopping">Shopping</SelectItem>
-                <SelectItem value="bills">Bills</SelectItem>
-                <SelectItem value="entertainment">Entertainment</SelectItem>
-              </SelectContent>
-            </Select>
+            <CategoryFilter
+              value={searchParams.get("category") ?? "all"}
+              onChange={(val) => setParam("category", val)}
+            />
           </div>
 
           {/* Amount Range */}
           <div className="grid gap-3">
             <Label>Amount Range</Label>
             <div className="flex gap-2">
-              <Input type="number" placeholder="Min ₱" />
-              <Input type="number" placeholder="Max ₱" />
+              <Input
+                type="number"
+                placeholder="Min ₱"
+                defaultValue={searchParams.get("minAmount") ?? ""}
+                onChange={(e) => setParam("minAmount", e.target.value)}
+              />
+              <Input
+                type="number"
+                placeholder="Max ₱"
+                defaultValue={searchParams.get("maxAmount") ?? ""}
+                onChange={(e) => setParam("maxAmount", e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -92,10 +90,7 @@ export default function TransactionFilter() {
         <SheetFooter className="mt-8">
           <Button
             variant="outline"
-            onClick={() => {
-              setTransactionType("all");
-              setCategory("all");
-            }}
+            onClick={() => resetParams(["type", "category", "minAmount", "maxAmount"])}
           >
             Reset
           </Button>
