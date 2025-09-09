@@ -34,11 +34,19 @@ export default function TransactionDialog() {
   }, [isSuccessful, form]);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        if (!isOpen) {
+          form.reset();
+        }
+      }}
+    >
       <DialogTrigger asChild>
-        <Button className="gap-2">
+        <Button className="gap-1">
           <Plus className="h-4 w-4" />
-          Add Transaction
+          Add<span className="hidden sm:inline"> Transaction</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
