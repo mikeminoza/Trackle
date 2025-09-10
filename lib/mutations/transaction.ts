@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';  
-import { createTransaction as createTransactionService} from '@/services/transaction';
+import { createTransactionService, updateTransactionService, deleteTransactionService} from '@/services/transaction';
+import { TransactionUpdate } from '@/types/db';
  
 
 export function useTransaction() {
   const queryClient = useQueryClient();
 
+  // Create
   const createTransaction = useMutation({ 
     mutationFn: createTransactionService, 
     onSuccess: (data) => {
@@ -17,5 +19,33 @@ export function useTransaction() {
     },
   });
 
-  return { createTransaction };
+  // Update
+  const updateTransaction = useMutation({ 
+    mutationFn: ({ id, updates }: { id: string; updates: TransactionUpdate }) =>
+      updateTransactionService(id, updates),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ['transactions', data.user_id],
+      });
+    },
+    onError: (error) => {
+      console.error(`Error creating transaction: ${(error as Error).message}`);
+    },
+  });
+  
+  // Delete
+  const deleteTransaction = useMutation({
+    mutationFn: deleteTransactionService,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["transactions", data.user_id],
+      });
+    },
+    onError: (error) => {
+      console.error(`Error deleting transaction: ${(error as Error).message}`);
+    },
+  });
+
+
+  return { createTransaction, updateTransaction, deleteTransaction };
 }

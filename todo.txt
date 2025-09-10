@@ -3,3 +3,5 @@ TODO
 1. Make ICON for the system
 2. Setup the Gemini's config or systems intruction 
 3. Transaction (edit and delete)
+4. Hide the spent if the expense filter is on (vice-versa)
+5. Calendar filter not working properly

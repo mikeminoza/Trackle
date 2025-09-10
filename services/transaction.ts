@@ -1,15 +1,43 @@
-import type { Database } from '@/utils/database.types';
 import { createClient } from '@/lib/supabase/client';
+import { TransactionInsert } from '@/types/db';
+import { TransactionUpdate } from '@/types/db';
 
 const supabase = createClient();
 
-export type TransactionInsert = Database['public']['Tables']['transactions']['Insert'];
-
 // Insert a new transaction
-export const createTransaction = async (newTransaction: TransactionInsert) => {
+export const createTransactionService = async (newTransaction: TransactionInsert) => {
   const { data, error } = await supabase
     .from('transactions')
     .insert(newTransaction)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+// Update an existing transaction
+export const updateTransactionService = async (
+  id: string,
+  updatedTransaction: TransactionUpdate
+) => {
+  const { data, error } = await supabase
+    .from("transactions")
+    .update(updatedTransaction)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+// Delete an existing transaction
+export const deleteTransactionService = async (id: string) => {
+  const { data, error } = await supabase
+    .from("transactions")
+    .delete()
+    .eq("id", id)
     .select()
     .single();
 

@@ -14,8 +14,11 @@ import ErrorQueryMessage from "@/components/ErrorQueryMessage";
 import { useUser } from "@/hooks/useUser";
 import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
 import NoResults from "@/components/NoResult";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
+  const [addOpen, setAddOpen] = useState(false);
   const { searchParams, hasFiltersApplied } = useUpdateQueryParams();
   const filters = {
     search: searchParams.get("query") ?? "",
@@ -52,7 +55,10 @@ export default function Page() {
           <div className="flex items-center gap-2">
             <CalendarFilter />
             <TransactionFilter />
-            <TransactionDialog />
+            <Button className="gap-1" onClick={() => setAddOpen(true)}>
+              <Plus className="h-4 w-4" /> Add
+              <span className="hidden sm:inline"> Transaction</span>
+            </Button>
           </div>
         </div>
         {isLoading ? (
@@ -87,11 +93,13 @@ export default function Page() {
               <p className="text-sm text-muted-foreground mb-6 max-w-sm">
                 Start tracking your expenses and income to see insights about your spending.
               </p>
-              <TransactionDialog />
             </div>
           </MotionEffect>
         )}
       </div>
+
+      {/* Add Transaction Dialog  */}
+      <TransactionDialog mode="add" label="Add" open={addOpen} onOpenChange={setAddOpen} />
     </>
   );
 }
