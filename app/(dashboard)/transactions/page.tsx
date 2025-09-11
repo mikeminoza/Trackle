@@ -8,7 +8,7 @@ import TransactionFilter from "@/components/transactions/TransactionFilter";
 import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
 import TransactionsSkeleton from "@/components/skeletons/TransactionSkeleton";
 import TransactionSearch from "@/components/transactions/TransactionSearch";
-import { useTransactionsQuery } from "@/lib/queries/transactions/useTransactionQueries";
+import { useTransactionsQuery } from "@/lib/queries/useTransactionQuery";
 import { TransactionList } from "@/components/transactions/TransactionList";
 import ErrorQueryMessage from "@/components/ErrorQueryMessage";
 import { useUser } from "@/hooks/useUser";

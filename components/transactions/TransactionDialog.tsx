@@ -40,7 +40,13 @@ export default function TransactionDialog({
   }, [isSuccessful, form, onOpenChange]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        onOpenChange(isOpen);
+        if (!isOpen) form.reset();
+      }}
+    >
       <DialogContent>
         <Form {...form}>
           <DialogHeader>
