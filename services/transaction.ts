@@ -45,7 +45,7 @@ export const deleteTransactionService = async (id: string) => {
   return data;
 };
 
-// Fetch transactions for a user
+// Fetch transactions 
 export const getTransactions = async (
   userId: string, 
   page: number, 

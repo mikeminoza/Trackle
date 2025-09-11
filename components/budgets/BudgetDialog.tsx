@@ -1,6 +1,19 @@
 "use client";
-import { Plus, Repeat, ArrowRight, ChevronDownIcon } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { Repeat, ArrowRight, ChevronDownIcon } from "lucide-react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Form, FormLabel } from "@/components/ui/form";
+import { useEffect, useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectTrigger,
@@ -8,106 +21,193 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import { Button } from "../ui/button";
-import { MotionEffect } from "../animate-ui/effects/motion-effect";
-import CategoryFilter from "../transactions/CategoryFilter";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import React from "react";
+import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export default function BudgetDialog() {
-  const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(undefined);
+import CategoryFilter from "../transactions/CategoryFilter";
+import { FormInput } from "../FormInput";
+import { BudgetDialogProps } from "@/types/budget";
+import useBudgetForm from "@/hooks/forms/useBudgetForm";
+
+export default function BudgetDialog({
+  mode,
+  label,
+  open,
+  onOpenChange,
+  budget = null,
+}: BudgetDialogProps) {
+  const { form, onSubmit, isLoading, isSuccessful } = useBudgetForm(budget);
+  const [openPopover, setOpenPopover] = useState(false);
+
+  const period = form.watch("period");
+  const category = form.watch("category");
+  const startDate = form.watch("start_date");
+
+  // close dialog whenever submission is successful
+  useEffect(() => {
+    if (isSuccessful) {
+      onOpenChange(false);
+      form.reset();
+    }
+  }, [isSuccessful, form, onOpenChange]);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <MotionEffect slide={{ direction: "down" }} fade zoom inView delay={0.3}>
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" /> Add Budget
-          </Button>
-        </MotionEffect>
-      </DialogTrigger>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        onOpenChange(isOpen);
+        if (!isOpen) form.reset();
+      }}
+    >
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add Budget</DialogTitle>
-          <DialogDescription>Create a budget with flexible options.</DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <Label>Category</Label>
-            <CategoryFilter />
-          </div>
-          <div className="grid gap-2">
-            <Label>Limit</Label>
-            <Input type="number" placeholder="₱5000" />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="date" className="px-1">
-              Start Date
-            </Label>
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <Button variant="outline" id="date" className="w-full justify-between font-normal">
-                  {date ? date.toLocaleDateString() : "Select date"}
-                  <ChevronDownIcon />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  captionLayout="dropdown"
-                  onSelect={(date) => {
-                    setDate(date);
-                    setOpen(false);
-                  }}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-          <div className="grid gap-2">
-            <Label>Period</Label>
-            <Select defaultValue="Monthly">
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select period" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Daily">Daily</SelectItem>
-                <SelectItem value="Weekly">Weekly</SelectItem>
-                <SelectItem value="Monthly">Monthly</SelectItem>
-                <SelectItem value="Yearly">Yearly</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <Form {...form}>
+          <DialogHeader>
+            <DialogTitle>{label} Budget</DialogTitle>
+            <DialogDescription>
+              {mode === "add"
+                ? "Create a budget with flexible options."
+                : "Update your budget details."}
+            </DialogDescription>
+          </DialogHeader>
 
-          <div className="flex items-center justify-between mt-2">
-            <Label htmlFor="recurring" className="flex items-center gap-2">
-              <Repeat className="h-4 w-4" /> Recurring
-            </Label>
-            <Switch id="recurring" />
-          </div>
-          <div className="flex items-center justify-between">
-            <Label htmlFor="carryover" className="flex items-center gap-2">
-              <ArrowRight className="h-4 w-4" /> Carryover unused
-            </Label>
-            <Switch id="carryover" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button>Add</Button>
-        </DialogFooter>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 mt-3">
+            {/* Category */}
+            <div className="space-y-2">
+              <FormLabel
+                className={cn(
+                  "text-xs ms-1",
+                  form.formState.errors.category ? "text-destructive" : ""
+                )}
+              >
+                Category
+              </FormLabel>
+              <CategoryFilter value={category} onChange={(val) => form.setValue("category", val)} />
+              {form.formState.errors.category && (
+                <p data-slot="form-message" className="text-destructive text-sm">
+                  {form.formState.errors.category.message}
+                </p>
+              )}
+            </div>
+
+            {/* Limit */}
+            <FormInput
+              control={form.control}
+              name="limit_amount"
+              label="Limit Amount"
+              type="number"
+              placeholder="₱5000"
+            />
+
+            {/* Start Date */}
+            <div className="space-y-2">
+              <FormLabel
+                className={cn(
+                  "text-xs ms-1",
+                  form.formState.errors.start_date ? "text-destructive" : ""
+                )}
+              >
+                Start Date
+              </FormLabel>
+              <Popover open={openPopover} onOpenChange={setOpenPopover}>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full justify-between font-normal">
+                    {startDate ? new Date(startDate).toLocaleDateString() : "Select date"}
+                    <ChevronDownIcon className="ml-2 h-4 w-4 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={startDate ? new Date(startDate) : undefined}
+                    captionLayout="dropdown"
+                    onSelect={(date) => {
+                      if (date) {
+                        form.setValue("start_date", date.toISOString());
+                        setOpenPopover(false);
+                      }
+                    }}
+                  />
+                </PopoverContent>
+              </Popover>
+              {form.formState.errors.start_date && (
+                <p data-slot="form-message" className="text-destructive text-sm">
+                  {form.formState.errors.start_date.message}
+                </p>
+              )}
+            </div>
+
+            {/* Period */}
+            <div className="space-y-2">
+              <FormLabel
+                className={cn(
+                  "text-xs ms-1",
+                  form.formState.errors.period ? "text-destructive" : ""
+                )}
+              >
+                Period
+              </FormLabel>
+              <Select
+                value={period}
+                onValueChange={(val) =>
+                  form.setValue("period", val as "daily" | "weekly" | "monthly" | "yearly")
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select period" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="daily">Daily</SelectItem>
+                  <SelectItem value="weekly">Weekly</SelectItem>
+                  <SelectItem value="monthly">Monthly</SelectItem>
+                  <SelectItem value="yearly">Yearly</SelectItem>
+                </SelectContent>
+              </Select>
+              {form.formState.errors.period && (
+                <p data-slot="form-message" className="text-destructive text-sm">
+                  {form.formState.errors.period.message}
+                </p>
+              )}
+            </div>
+
+            {/* Recurring */}
+            <div className="flex items-center justify-between">
+              <FormLabel htmlFor="recurring" className="flex items-center gap-2">
+                <Repeat className="h-4 w-4" /> Recurring
+              </FormLabel>
+              <div className="flex justify-end">
+                <FormInput control={form.control} name="recurring" variant="switch" />
+              </div>
+            </div>
+
+            {/* Carry Over */}
+            <div className="flex items-center justify-between">
+              <FormLabel htmlFor="carry_over" className="flex items-center gap-2">
+                <ArrowRight className="h-4 w-4" /> Carryover unused
+              </FormLabel>
+              <div className="flex justify-end">
+                <FormInput control={form.control} name="carry_over" variant="switch" />
+              </div>
+            </div>
+
+            <DialogFooter className="mt-3">
+              <DialogClose asChild disabled={isLoading}>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button type="submit" disabled={isLoading}>
+                <div className="flex items-center gap-2">
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    label
+                  )}
+                </div>
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

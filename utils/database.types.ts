@@ -140,10 +140,44 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      budgets_with_spent: {
+        Row: {
+          carry_over: boolean | null
+          category: string | null
+          created_at: string | null
+          end_date: string | null
+          id: string | null
+          limit_amount: number | null
+          period: string | null
+          recurring: boolean | null
+          spent: number | null
+          start_date: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      compute_budget_end_date: {
+        Args: { in_period: string; in_start_date: string }
+        Returns: string
+      }
+      get_active_budgets: {
+        Args: { user_id_input: string }
+        Returns: {
+          carry_over: boolean
+          category: string
+          created_at: string
+          end_date: string
+          id: string
+          limit_amount: number
+          period: string
+          recurring: boolean
+          spent: number
+          start_date: string
+          user_id: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

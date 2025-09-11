@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -24,6 +23,7 @@ import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
 
 export default function TransactionFilter() {
   const { setParam, searchParams, resetParams } = useUpdateQueryParams();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -92,11 +92,8 @@ export default function TransactionFilter() {
             variant="outline"
             onClick={() => resetParams(["type", "category", "minAmount", "maxAmount"])}
           >
-            Reset
+            Reset Filters
           </Button>
-          <SheetClose asChild>
-            <Button>Apply Filters</Button>
-          </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>

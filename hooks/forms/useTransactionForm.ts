@@ -54,6 +54,7 @@ export default function useTransactionForm(transaction: Transaction | null) {
 
   const isSuccessful = transaction
     ? updateTransaction.isSuccess
-    : createTransaction.isSuccess;
+    : createTransaction.isSuccess; 
+    
   return { form, onSubmit, isLoading, isSuccessful };
 }
