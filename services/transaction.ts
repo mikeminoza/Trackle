@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/client';
 import { TransactionInsert } from '@/types/db';
 import { TransactionUpdate } from '@/types/db';
+import { TransactionFilters } from '@/types/transaction';
 
 const supabase = createClient();
 
@@ -50,14 +51,7 @@ export const getTransactions = async (
   userId: string, 
   page: number, 
   limit = 15, 
-  filters?: {
-    search?: string;
-    type?: "all" | "income" | "expense";
-    category?: string;
-    minAmount?: number;
-    maxAmount?: number;
-    date?: string; 
-  }) => {
+  filters?: TransactionFilters) => {
   const from = page * limit;
   const to = from + limit - 1;
   let query = supabase

@@ -6,8 +6,5 @@ TODO
 4. Hide the spent if the expense filter is on (vice-versa)
 5. Calendar filter not working properly
 6. Add the database and supabase types in the .gitignore
-7. Budget should not have duplicates
-8. Budget edit and delete
-9. Budget filter
-10. Budget KPI
-11. Create word capitalizer util
+7. Budget should not have duplicates  
+8. Change the budget summary description based on the filter applied

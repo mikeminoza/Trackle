@@ -16,11 +16,12 @@ import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
 import NoResults from "@/components/NoResult";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { TransactionFilters } from "@/types/transaction";
 
 export default function Page() {
   const [addOpen, setAddOpen] = useState(false);
   const { searchParams, hasFiltersApplied } = useUpdateQueryParams();
-  const filters = {
+  const filters: TransactionFilters = {
     search: searchParams.get("query") ?? "",
     type: (searchParams.get("type") as "all" | "income" | "expense") ?? "all",
     category: searchParams.get("category") ?? "all",
@@ -61,11 +62,26 @@ export default function Page() {
             </Button>
           </div>
         </div>
+        {/* Transaction List  */}
         {isLoading ? (
           <TransactionsSkeleton />
         ) : isError ? (
           <ErrorQueryMessage />
-        ) : transactions.length > 0 ? (
+        ) : !transactions || transactions.length === 0 ? (
+          <MotionEffect fade zoom slide={{ direction: "up" }} delay={0.3} inView>
+            <div className="flex flex-col items-center justify-center py-20 px-6 bg-muted/30 border border-dashed rounded-2xl text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mb-4">
+                <Plus className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">No transactions yet</h3>
+              <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+                Start tracking your expenses and income to see insights about your spending.
+              </p>
+            </div>
+          </MotionEffect>
+        ) : filtersApplied ? (
+          <NoResults message="No transactions match your filters" />
+        ) : (
           <>
             <TransactionList transactions={transactions} />
 
@@ -81,20 +97,6 @@ export default function Page() {
               </div>
             )}
           </>
-        ) : filtersApplied ? (
-          <NoResults message="No transactions match your filters" />
-        ) : (
-          <MotionEffect fade zoom slide={{ direction: "up" }} delay={0.3} inView>
-            <div className="flex flex-col items-center justify-center py-20 px-6 bg-muted/30 border border-dashed rounded-2xl text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mb-4">
-                <Plus className="h-8 w-8 text-muted-foreground" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">No transactions yet</h3>
-              <p className="text-sm text-muted-foreground mb-6 max-w-sm">
-                Start tracking your expenses and income to see insights about your spending.
-              </p>
-            </div>
-          </MotionEffect>
         )}
       </div>
 

@@ -11,3 +11,18 @@ export type BudgetDialogProps = {
 export type BudgetWithSpent = Budget & {
   spent: number;
 };
+
+export type BudgetFilters = {
+  status: "active" | "inactive";
+  category: string;
+  period: string;
+  recurring: "yes" | "no" | "all";
+  carryover: "yes" | "no" | "all";
+  progress: "under50" | "50to100" | "over100" | "all";
+};
+
+export type BudgetSummary = {
+  total_budget: number;
+  total_spent: number;
+  remaining: number;
+};

@@ -2,71 +2,38 @@
 
 import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import type { BudgetSummary as BudgetSummaryType } from "@/types/budget";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+import BudgetSummarySkeleton from "../skeletons/BudgetSummarySkeleton";
+import ErrorKpiQueryMessage from "../ErrorKpiQueryMessage";
 
-// Fake data for demo
-const demoBudgets = [
-  {
-    id: 1,
-    category: "Food",
-    limit: 5000,
-    spent: 3200,
-    recurring: true,
-    carryover: false,
-    period: "Monthly",
-  },
-  {
-    id: 2,
-    category: "Transport",
-    limit: 2000,
-    spent: 800,
-    recurring: false,
-    carryover: true,
-    period: "Weekly",
-  },
-  {
-    id: 3,
-    category: "Subscriptions",
-    limit: 1500,
-    spent: 1500,
-    recurring: true,
-    carryover: false,
-    period: "Monthly",
-  },
-  {
-    id: 4,
-    category: "Shopping",
-    limit: 4000,
-    spent: 2200,
-    recurring: false,
-    carryover: true,
-    period: "Monthly",
-  },
-];
+interface BudgetSummaryProps {
+  summary?: BudgetSummaryType;
+  isLoading?: boolean;
+  isError?: boolean;
+}
 
-export default function BudgetSummary() {
-  const budgets = demoBudgets;
-
-  const totalBudget = budgets.reduce((acc, b) => acc + b.limit, 0);
-  const totalSpent = budgets.reduce((acc, b) => acc + b.spent, 0);
-  const remaining = totalBudget - totalSpent;
+export default function BudgetSummary({ summary, isLoading, isError }: BudgetSummaryProps) {
+  if (isLoading || !summary) return <BudgetSummarySkeleton />;
+  if (isError) return <ErrorKpiQueryMessage />;
 
   const summaryCards = [
     {
       title: "Total Budget",
       description: "All categories combined",
-      value: `₱${totalBudget.toLocaleString()}`,
+      value: formatCurrency(summary.total_budget),
       color: "text-foreground",
     },
     {
       title: "Spent",
       description: "Across all categories",
-      value: `₱${totalSpent.toLocaleString()}`,
+      value: formatCurrency(summary.total_spent),
       color: "text-red-500",
     },
     {
       title: "Remaining",
       description: "Unspent budget",
-      value: `₱${remaining.toLocaleString()}`,
+      value: formatCurrency(summary.remaining),
       color: "text-green-500",
     },
   ];
@@ -80,7 +47,7 @@ export default function BudgetSummary() {
           fade
           zoom
           inView
-          delay={0.3 + index * 0.1} // stagger effect
+          delay={0.3 + index * 0.1}
         >
           <Card>
             <CardHeader>

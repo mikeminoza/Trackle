@@ -1,17 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getTransactions } from "@/services/transaction";
 import { Transaction } from "@/types/db";
+import { TransactionFilters } from "@/types/transaction";
 
 export const useTransactionsQuery = (
   userId?: string, 
-  filters?: {
-    search?: string;
-    type?: "all" | "income" | "expense";
-    category?: string;
-    minAmount?: number;
-    maxAmount?: number;
-    date?: string;
-  }, 
+  filters?: TransactionFilters, 
   limit = 15) =>
   useInfiniteQuery<Transaction[], Error>({
     queryKey: ["transactions", userId, filters],
