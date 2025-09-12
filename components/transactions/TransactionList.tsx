@@ -4,7 +4,7 @@ import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
 import { format, isToday } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
-import { TransactionItem } from "./Transactiontem";
+import { TransactionItem } from "./TransactionItem";
 import { Transaction } from "@/types/db";
 
 export function TransactionList({ transactions }: { transactions: Transaction[] }) {

@@ -178,6 +178,38 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_budget_kpis: {
+        Args: {
+          carryover_filter?: string
+          category_filter?: string
+          period_filter?: string
+          progress_filter?: string
+          recurring_filter?: string
+          status_filter?: string
+          user_id_input: string
+        }
+        Returns: {
+          remaining: number
+          total_budget: number
+          total_spent: number
+        }[]
+      }
+      get_inactive_budgets: {
+        Args: { user_id_input: string }
+        Returns: {
+          carry_over: boolean
+          category: string
+          created_at: string
+          end_date: string
+          id: string
+          limit_amount: number
+          period: string
+          recurring: boolean
+          spent: number
+          start_date: string
+          user_id: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
