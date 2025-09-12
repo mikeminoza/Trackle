@@ -23,14 +23,11 @@ Log expenses, set budgets, track savings goals, and gain financial clarity – a
   - **Combine with carryover**: users can choose whether a recurring budget resets cleanly or rolls over leftover/overspent amounts.  
 
 
-### Recurring Reminders
-- Schedule recurring bills (e.g., Rent ₱5,000 every 30 days).
-
 ### Reports & Dashboards
 - Dashboard summary: total income, expenses, and balance.
 - Category-wise breakdown for smarter spending decisions.
 
-### AI-Powered Insights (MVP-friendly)
+### AI-Powered Insights 
 - Spending Insights:  
   - "You spent 40% more on food this week than last week."  
   - "Cutting ₱500 from subscriptions saves ₱6,000/year."  
@@ -42,7 +39,7 @@ Log expenses, set budgets, track savings goals, and gain financial clarity – a
 - AI responds with insights using local data and Gemini AI.
 
 ### Settings & Personalization
-- Update profile details (name, currency, theme).
+- Update profile details (name, theme).
 - Manage reminders and notifications.
 - Option to reset or clear all data.
 
