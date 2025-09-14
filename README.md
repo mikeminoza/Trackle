@@ -9,6 +9,9 @@ Easily log expenses, set and manage budgets, track savings goals, and gain clear
 
 ### Transaction Management
 - Manually add, edit, and delete income and expenses.
+- **Voice Input**
+  - Quickly log transactions using speech.
+    - Example: Say “Spent 250 pesos on food yesterday” and Trackle will automatically create a transaction
 
 ### Budgets
 - Set monthly budget limits by category.
