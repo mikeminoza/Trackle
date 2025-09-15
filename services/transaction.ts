@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/client';
-import { TransactionInsert } from '@/types/db';
+import { getDateRange } from '@/lib/utils/getDateRange';
+import { Transaction, TransactionInsert } from '@/types/db';
 import { TransactionUpdate } from '@/types/db';
 import { TransactionFilters } from '@/types/transaction';
 
@@ -14,7 +15,7 @@ export const createTransactionService = async (newTransaction: TransactionInsert
     .single();
 
   if (error) throw error;
-  return data;
+  return data as Transaction;
 };
 
 // Update an existing transaction
@@ -30,7 +31,7 @@ export const updateTransactionService = async (
     .single();
 
   if (error) throw error;
-  return data;
+  return data as Transaction;
 };
 
 // Delete an existing transaction
@@ -43,7 +44,7 @@ export const deleteTransactionService = async (id: string) => {
     .single();
 
   if (error) throw error;
-  return data;
+  return data as Transaction;
 };
 
 // Fetch transactions 
@@ -79,9 +80,15 @@ export const getTransactions = async (
   if (filters?.date) {
     query = query.eq("date", filters.date);
   }
+  if (filters?.period && filters.period !== "all") {
+    const { start, end } = getDateRange(filters.period);
+    query = query.gte("date", start.toISOString()).lte("date", end.toISOString());
+  } else if (filters?.date) {
+    query = query.eq("date", filters.date);
+  }
 
   const { data, error } = await query;
   if (error) throw error;
 
-  return data;
+  return data as Transaction[];
 };

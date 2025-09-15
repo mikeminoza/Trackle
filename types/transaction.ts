@@ -20,5 +20,6 @@ export type TransactionFilters = {
   category?: string;
   minAmount?: number;
   maxAmount?: number;
-  date?: string;  
+  date?: string;
+  period?: "all" | "today" | "thisWeek" | "thisMonth";
 };

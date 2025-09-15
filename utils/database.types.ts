@@ -194,6 +194,14 @@ export type Database = {
           total_spent: number
         }[]
       }
+      get_financial_summary: {
+        Args: { p_user_id: string }
+        Returns: {
+          balance: number
+          expense_this_month: number
+          income_this_month: number
+        }[]
+      }
       get_inactive_budgets: {
         Args: { user_id_input: string }
         Returns: {
@@ -209,6 +217,32 @@ export type Database = {
           start_date: string
           user_id: string
         }[]
+      }
+      get_spending_breakdown: {
+        Args:
+          | { p_month?: number; p_user_id: string; p_year: number }
+          | { p_user_id: string; p_year: number }
+        Returns: {
+          amount: number
+          category: string
+          month: string
+        }[]
+      }
+      get_transaction_aggregates_by_month: {
+        Args: { p_user_id: string; p_year: number }
+        Returns: {
+          expenses: number
+          income: number
+          month: string
+        }[]
+      }
+      rollover_budget: {
+        Args: { budget_id: string }
+        Returns: undefined
+      }
+      rollover_expired_budgets: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
     }
     Enums: {

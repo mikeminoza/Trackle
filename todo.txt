@@ -5,6 +5,6 @@ TODO
 3. Transaction (edit and delete)
 4. Hide the spent if the expense filter is on (vice-versa)
 5. Calendar filter not working properly
-6. Add the database and supabase types in the .gitignore
-7. Budget should not have duplicates  
-8. Change the budget summary description based on the filter applied
+6. Add the database and supabase types in the .gitignore+
+7. Add filters for the charts
+8. Fix the group of the transaction items 
