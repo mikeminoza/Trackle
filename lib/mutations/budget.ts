@@ -2,15 +2,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createBudgetService, updateBudgetService, deleteBudgetService } from '@/services/budget';
 import { BudgetUpdate } from '@/types/db';
 import { toast } from 'sonner';
+import { invalidateUserData } from '../utils/queryInvalidations';
  
 
 export function useBudget() {
   const queryClient = useQueryClient();
 
   const handleSuccess = (userId: string, message: string) => {
-    queryClient.invalidateQueries({ queryKey: ["budgets", userId] });
-    queryClient.invalidateQueries({ queryKey: ["budgetsummary", userId] });
-    toast.success(message);
+    invalidateUserData(queryClient, userId, message);
   };
 
   const handleError = (error: unknown, action: string) => {

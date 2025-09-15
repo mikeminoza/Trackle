@@ -4,7 +4,7 @@ import { BudgetFilters, BudgetSummary } from "@/types/budget";
 
 export const useBudgetSummaryQuery = (userId?: string, filters?: BudgetFilters) =>
   useQuery<BudgetSummary, Error>({
-    queryKey: ["budgetsummary", userId, filters], 
+    queryKey: ["budgetSummary", userId, filters], 
     queryFn: () => getBudgetSummary(userId!, filters),
     enabled: !!userId,  
   });

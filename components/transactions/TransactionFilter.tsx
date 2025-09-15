@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SlidersHorizontal } from "lucide-react";
+import CalendarFilter from "./CalendarFilter";
 import CategoryFilter from "./CategoryFilter";
 import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
 
@@ -27,8 +28,8 @@ export default function TransactionFilter() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon">
-          <SlidersHorizontal className="h-4 w-4" />
+        <Button variant="outline">
+          Filters <SlidersHorizontal className="h-4 w-4" />
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-[350px] sm:w-[400px]">
@@ -40,6 +41,12 @@ export default function TransactionFilter() {
         </SheetHeader>
 
         <div className="grid flex-1 auto-rows-min gap-6 px-4 mt-6">
+          {/* Calendar Filter */}
+          <div className="grid gap-3">
+            <Label>Date</Label>
+            <CalendarFilter />
+          </div>
+
           {/* Type Filter */}
           <div className="grid gap-3">
             <Label>Transaction Type</Label>
@@ -90,7 +97,9 @@ export default function TransactionFilter() {
         <SheetFooter className="mt-8">
           <Button
             variant="outline"
-            onClick={() => resetParams(["type", "category", "minAmount", "maxAmount"])}
+            onClick={() =>
+              resetParams(["query", "period", "date", "type", "category", "minAmount", "maxAmount"])
+            }
           >
             Reset Filters
           </Button>

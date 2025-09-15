@@ -2,7 +2,6 @@
 
 import { ContentHeader } from "@/components/sidebar/content-header";
 import { Loader2, Plus } from "lucide-react";
-import CalendarFilter from "@/components/transactions/CalendarFilter";
 import TransactionDialog from "@/components/transactions/TransactionDialog";
 import TransactionFilter from "@/components/transactions/TransactionFilter";
 import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
@@ -17,17 +16,24 @@ import NoResults from "@/components/NoResult";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TransactionFilters } from "@/types/transaction";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function Page() {
   const [addOpen, setAddOpen] = useState(false);
-  const { searchParams, hasFiltersApplied } = useUpdateQueryParams();
+  const { searchParams, setParam, hasFiltersApplied } = useUpdateQueryParams();
   const filters: TransactionFilters = {
     search: searchParams.get("query") ?? "",
     type: (searchParams.get("type") as "all" | "income" | "expense") ?? "all",
     category: searchParams.get("category") ?? "all",
     minAmount: searchParams.get("minAmount") ? Number(searchParams.get("minAmount")) : undefined,
     maxAmount: searchParams.get("maxAmount") ? Number(searchParams.get("maxAmount")) : undefined,
-    date: searchParams.get("date") ?? undefined,
+    period: (searchParams.get("period") as "all" | "today" | "thisWeek" | "thisMonth") ?? "all",
   };
 
   const { data: user } = useUser();
@@ -43,6 +49,7 @@ export default function Page() {
     "minAmount",
     "maxAmount",
     "date",
+    "period",
   ]);
   return (
     <>
@@ -54,7 +61,20 @@ export default function Page() {
             <TransactionSearch />
           </div>
           <div className="flex items-center gap-2">
-            <CalendarFilter />
+            <Select
+              value={searchParams.get("period") ?? "all"}
+              onValueChange={(val) => setParam("period", val)}
+            >
+              <SelectTrigger className="justify-between font-normal">
+                <SelectValue placeholder="Filter by period" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="thisWeek">This Week</SelectItem>
+                <SelectItem value="thisMonth">This Month</SelectItem>
+              </SelectContent>
+            </Select>
             <TransactionFilter />
             <Button className="gap-1" onClick={() => setAddOpen(true)}>
               <Plus className="h-4 w-4" /> Add
@@ -67,7 +87,7 @@ export default function Page() {
           <TransactionsSkeleton />
         ) : isError ? (
           <ErrorQueryMessage />
-        ) : !transactions || transactions.length === 0 ? (
+        ) : !transactions || (transactions.length === 0 && !filtersApplied) ? (
           <MotionEffect fade zoom slide={{ direction: "up" }} delay={0.3} inView>
             <div className="flex flex-col items-center justify-center py-20 px-6 bg-muted/30 border border-dashed rounded-2xl text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mb-4">
@@ -79,11 +99,11 @@ export default function Page() {
               </p>
             </div>
           </MotionEffect>
-        ) : filtersApplied ? (
+        ) : filtersApplied && transactions.length === 0 ? (
           <NoResults message="No transactions match your filters" />
         ) : (
           <>
-            <TransactionList transactions={transactions} />
+            <TransactionList transactions={transactions} filters={filters} />
 
             {hasNextPage && (
               <div className="mt-4 relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">

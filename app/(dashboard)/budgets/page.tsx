@@ -74,6 +74,7 @@ export default function BudgetPage() {
         {/* Budget Summary  */}
         <BudgetSummary
           summary={budgetSummary}
+          filters={filters}
           isLoading={isSummaryLoading}
           isError={isSummaryError}
         />
@@ -84,7 +85,7 @@ export default function BudgetPage() {
           <BudgetSkeleton />
         ) : isBudgetsError ? (
           <ErrorQueryMessage />
-        ) : !budgets || budgets.length === 0 ? (
+        ) : !budgets || (budgets.length === 0 && !filtersApplied) ? (
           <MotionEffect fade zoom slide={{ direction: "up" }} delay={0.3} inView>
             <div className="flex flex-col items-center justify-center py-20 px-6 bg-muted/30 border border-dashed rounded-2xl text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mb-4">
@@ -97,7 +98,7 @@ export default function BudgetPage() {
               </p>
             </div>
           </MotionEffect>
-        ) : filtersApplied ? (
+        ) : filtersApplied && budgets.length === 0 ? (
           <NoResults message="No budgets match your filters" />
         ) : (
           <BudgetList budgets={budgets} />

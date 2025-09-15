@@ -1,29 +1,20 @@
-"use client";
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { DollarSign, CreditCard, Wallet, PieChart } from "lucide-react";
+import { DollarSign, CreditCard, Wallet } from "lucide-react";
 import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { FinancialSummary as FinancialSummaryType } from "@/types/dashboard";
 
-function formatCurrency(value: number) {
-  if (typeof value !== "number") return "—";
-  return value.toLocaleString("en-PH", {
-    style: "currency",
-    currency: "PHP",
-    maximumFractionDigits: 0,
-  });
+interface FinancialSummaryProps {
+  summary?: FinancialSummaryType;
 }
 
-export default function FinancialSummary({
-  totalBalance = 125000,
-  incomeThisMonth = 150000,
-  expensesThisMonth = 25000,
-  remainingBudget = 35000,
-} = {}) {
+export default function FinancialSummary({ summary }: FinancialSummaryProps) {
+  const { balance = 0, income_this_month = 0, expense_this_month = 0 } = summary || {};
   const items = [
     {
       title: "Total Balance",
-      value: totalBalance,
+      value: balance,
       description: "Income — Expenses",
       icon: DollarSign,
       iconColor: "text-primary",
@@ -31,7 +22,7 @@ export default function FinancialSummary({
     },
     {
       title: "This Month's Income",
-      value: incomeThisMonth,
+      value: income_this_month,
       description: "All income categories combined",
       icon: CreditCard,
       iconColor: "text-chart-3",
@@ -39,24 +30,16 @@ export default function FinancialSummary({
     },
     {
       title: "This Month's Expenses",
-      value: expensesThisMonth,
+      value: expense_this_month,
       description: "Sum of all outflows",
       icon: Wallet,
       iconColor: "text-chart-2",
       bgColor: "bg-chart-2/10",
     },
-    {
-      title: "Remaining Budget",
-      value: remainingBudget,
-      description: "Across all categories",
-      icon: PieChart,
-      iconColor: "text-chart-4",
-      bgColor: "bg-chart-4/10",
-    },
   ];
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {items.map((item, index) => {
         const Icon = item.icon;
         return (

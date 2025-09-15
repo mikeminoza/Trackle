@@ -6,19 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
+import { format, parse } from "date-fns";
 
 export default function CalendarFilter() {
   const [open, setOpen] = React.useState(false);
   const { setParam, searchParams } = useUpdateQueryParams();
 
   const dateParam = searchParams.get("date") ?? undefined;
-  const parsedDate = dateParam ? new Date(dateParam) : undefined;
+  const parsedDate = dateParam ? parse(dateParam, "yyyy-MM-dd", new Date()) : undefined;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" className="justify-between font-normal">
-          {parsedDate ? parsedDate.toLocaleDateString() : "Filter by date"}
+          {parsedDate ? format(parsedDate, "MMMM d, yyyy") : "Filter by date"}
           <ChevronDownIcon className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -28,7 +29,11 @@ export default function CalendarFilter() {
           selected={parsedDate}
           captionLayout="dropdown"
           onSelect={(d) => {
-            setParam("date", d ? d.toISOString().split("T")[0] : undefined);
+            if (d) {
+              setParam("date", format(d, "yyyy-MM-dd"));
+            } else {
+              setParam("date", undefined);
+            }
             setOpen(false);
           }}
         />

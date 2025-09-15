@@ -145,15 +145,7 @@ export default function BudgetFilter() {
           <Button
             variant="outline"
             onClick={() =>
-              resetParams([
-                "status",
-                "category",
-                "period",
-                "recurring",
-                "carryover",
-                "minProgress",
-                "maxProgress",
-              ])
+              resetParams(["status", "category", "period", "recurring", "carryover", "progress"])
             }
           >
             Reset Filters

@@ -18,17 +18,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { MotionEffect } from "../animate-ui/effects/motion-effect";
-
-export const description = "A multiple bar chart";
-
-const chartData = [
-  { month: "January", income: 186, expenses: 80 },
-  { month: "February", income: 305, expenses: 200 },
-  { month: "March", income: 237, expenses: 120 },
-  { month: "April", income: 73, expenses: 190 },
-  { month: "May", income: 209, expenses: 130 },
-  { month: "June", income: 214, expenses: 140 },
-];
+import { TransactionAggregate } from "@/types/dashboard";
 
 const chartConfig = {
   income: {
@@ -41,7 +31,34 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function IncomeExpenseChart() {
+interface IncomeExpenseChartProps {
+  data: TransactionAggregate[];
+}
+
+const monthOrder: Record<string, number> = {
+  January: 0,
+  February: 1,
+  March: 2,
+  April: 3,
+  May: 4,
+  June: 5,
+  July: 6,
+  August: 7,
+  September: 8,
+  October: 9,
+  November: 10,
+  December: 11,
+};
+
+export default function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
+  const chartData = data
+    .sort((a, b) => monthOrder[a.month] - monthOrder[b.month])
+    .map((d) => ({
+      month: d.month.slice(0, 3),
+      income: d.income,
+      expenses: d.expenses,
+    }));
+
   return (
     <MotionEffect
       key={"incomeexpense"}

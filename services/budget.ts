@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import { BudgetFilters, BudgetSummary, BudgetWithSpent } from "@/types/budget";
-import { BudgetInsert, BudgetUpdate } from "@/types/db";
+import { Budget, BudgetInsert, BudgetUpdate } from "@/types/db";
 
 const supabase = createClient();
 
@@ -13,7 +13,7 @@ export const createBudgetService = async (newBudget: BudgetInsert) => {
     .single();
 
   if (error) throw error;
-  return data;
+  return data as Budget;
 };
 
 // Update an existing budget
@@ -29,7 +29,7 @@ export const updateBudgetService = async (
     .single();
 
   if (error) throw error;
-  return data;
+  return data  as Budget;
 };
 
 // Delete an existing budget
@@ -42,7 +42,7 @@ export const deleteBudgetService = async (id: string) => {
     .single();
 
   if (error) throw error;
-  return data;
+  return data as Budget;
 };
 
 
@@ -96,11 +96,9 @@ export const getBudgets = async (
       return true;
     });
   }
-  
-  return budgets;
+  console.log(budgets);
+  return budgets as BudgetWithSpent[];
 };
-
-
 
 // Fetch budget summary
 export const getBudgetSummary = async (

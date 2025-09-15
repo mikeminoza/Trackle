@@ -17,16 +17,11 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { MotionEffect } from "../animate-ui/effects/motion-effect";
+import { TransactionAggregate } from "@/types/dashboard";
 
-// Example dataset: cumulative balance (income - expenses over time)
-const chartData = [
-  { month: "January", balance: 5000 },
-  { month: "February", balance: 3000 },
-  { month: "March", balance: 6500 },
-  { month: "April", balance: 7200 },
-  { month: "May", balance: 4800 },
-  { month: "June", balance: 8000 },
-];
+interface CashFlowTrendChartProps {
+  data: TransactionAggregate[];
+}
 
 const chartConfig = {
   balance: {
@@ -34,7 +29,17 @@ const chartConfig = {
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
-export default function CashFlowTrendChart() {
+
+function getCumulativeBalance(data: CashFlowTrendChartProps["data"]) {
+  let cumulative = 0;
+  return data.map((d) => {
+    cumulative += d.income - d.expenses;
+    return { month: d.month.slice(0, 3), balance: cumulative };
+  });
+}
+
+export default function CashFlowTrendChart({ data }: CashFlowTrendChartProps) {
+  const chartData = getCumulativeBalance(data);
   return (
     <MotionEffect
       key={"cashflowtrend"}
