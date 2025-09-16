@@ -15,3 +15,7 @@ export type SpendingBreakdown = {
   category: string;
   amount: number;
 };
+
+export type AvailableYear = {
+  year: number;
+};

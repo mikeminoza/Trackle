@@ -5,6 +5,10 @@ TODO
 3. Transaction (edit and delete)
 4. Hide the spent if the expense filter is on (vice-versa)
 5. Calendar filter not working properly
-6. Add the database and supabase types in the .gitignore+
-7. Add filters for the charts
-8. Fix the group of the transaction items 
+6. Add the database and supabase types in the .gitignore+ 
+7. Fix the group of the transaction items 
+8. Remove all the console
+9. Fix header scroll issue
+10. Transaction filter not working properly
+11. Calendar filter not working properly
+12. Charts tooltip colors not showing

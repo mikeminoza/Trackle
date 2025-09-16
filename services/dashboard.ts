@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
+import { AvailableYear } from "@/types/dashboard";
 import { FinancialSummary, SpendingBreakdown, TransactionAggregate } from "@/types/dashboard";
 
 const supabase = createClient();
@@ -29,8 +30,17 @@ export async function getSpendingBreakdown(userId: string, year: number, month: 
       p_year: year,
       p_month: month,
     });
-
-  if (error) throw error; 
+ 
+  if (error) throw error;   
   return data as SpendingBreakdown[];
 }
 
+export async function getAvailableYears(userId: string) {
+  const { data, error } = await supabase
+    .rpc("get_available_transaction_years", {
+      p_user_id: userId,
+    });
+
+  if (error) throw error; 
+  return data as AvailableYear[];
+}

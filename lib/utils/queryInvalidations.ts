@@ -12,7 +12,8 @@ export const invalidateUserData = (
     ["budgetSummary", userId],
     ["financialSummary", userId],
     ["transactionAggregates", userId],
-    ["spendingBreakdown", userId]
+    ["spendingBreakdown", userId],
+    ["years", userId]
   ];
 
   keys.forEach((key) => {

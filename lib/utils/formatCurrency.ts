@@ -7,3 +7,14 @@ export function formatCurrency(amount: number) {
     .format(amount)
     .replace("₱", "₱ "); 
 }
+
+export function formatCompactCurrency(amount: number) {
+  return new Intl.NumberFormat("en-PH", {
+    style: "currency",
+    currency: "PHP",
+    notation: "compact",       
+    maximumFractionDigits: 1,   
+  })
+    .format(amount)
+    .replace("₱", "₱ "); 
+}

@@ -178,6 +178,12 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_available_transaction_years: {
+        Args: { p_user_id: string }
+        Returns: {
+          year: number
+        }[]
+      }
       get_budget_kpis: {
         Args: {
           carryover_filter?: string

@@ -10,15 +10,17 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Check, Loader2 } from "lucide-react";
+import { Check, ChevronDownIcon, Loader2 } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 import CategoryFilter from "./CategoryFilter";
 import useTransactionForm from "@/hooks/forms/useTransactionForm";
+import { Calendar } from "@/components/ui/calendar";
 import { Form, FormLabel } from "../ui/form";
 import { FormInput } from "../FormInput";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TransactionDialogProps } from "@/types/transaction";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export default function TransactionDialog({
   mode,
@@ -28,8 +30,10 @@ export default function TransactionDialog({
   transaction = null,
 }: TransactionDialogProps) {
   const { form, onSubmit, isLoading, isSuccessful } = useTransactionForm(transaction);
+  const [openPopover, setOpenPopover] = useState(false);
   const type = form.watch("type");
   const category = form.watch("category");
+  const dateInput = form.watch("date");
 
   // close dialog whenever submission is successful
   useEffect(() => {
@@ -120,6 +124,41 @@ export default function TransactionDialog({
               type="number"
               placeholder="₱0.00"
             />
+
+            {/* Date  */}
+            <div className="space-y-2">
+              <FormLabel
+                className={cn("text-xs ms-1", form.formState.errors.date ? "text-destructive" : "")}
+              >
+                Date
+              </FormLabel>
+              <Popover open={openPopover} onOpenChange={setOpenPopover}>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full justify-between font-normal">
+                    {dateInput ? new Date(dateInput).toLocaleDateString() : "Select date"}
+                    <ChevronDownIcon className="ml-2 h-4 w-4 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={dateInput ? new Date(dateInput) : undefined}
+                    captionLayout="dropdown"
+                    onSelect={(date) => {
+                      if (date) {
+                        form.setValue("date", date.toISOString());
+                        setOpenPopover(false);
+                      }
+                    }}
+                  />
+                </PopoverContent>
+              </Popover>
+              {form.formState.errors.date && (
+                <p data-slot="form-message" className="text-destructive text-sm">
+                  {form.formState.errors.date.message}
+                </p>
+              )}
+            </div>
             <DialogFooter className="mt-3">
               <DialogClose asChild disabled={isLoading}>
                 <Button variant="outline">Cancel</Button>

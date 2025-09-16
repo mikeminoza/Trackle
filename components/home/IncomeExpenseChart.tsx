@@ -1,6 +1,5 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
@@ -19,6 +18,8 @@ import {
 } from "@/components/ui/chart";
 import { MotionEffect } from "../animate-ui/effects/motion-effect";
 import { TransactionAggregate } from "@/types/dashboard";
+import { monthOrder } from "@/constants/months";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 const chartConfig = {
   income: {
@@ -33,24 +34,10 @@ const chartConfig = {
 
 interface IncomeExpenseChartProps {
   data: TransactionAggregate[];
+  selectedYear: number | null;
 }
 
-const monthOrder: Record<string, number> = {
-  January: 0,
-  February: 1,
-  March: 2,
-  April: 3,
-  May: 4,
-  June: 5,
-  July: 6,
-  August: 7,
-  September: 8,
-  October: 9,
-  November: 10,
-  December: 11,
-};
-
-export default function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
+export default function IncomeExpenseChart({ data, selectedYear }: IncomeExpenseChartProps) {
   const chartData = data
     .sort((a, b) => monthOrder[a.month] - monthOrder[b.month])
     .map((d) => ({
@@ -58,6 +45,22 @@ export default function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
       income: d.income,
       expenses: d.expenses,
     }));
+
+  const firstMonth = chartData[0]?.month || "";
+  const lastMonth = chartData[chartData.length - 1]?.month || "";
+  const description =
+    firstMonth && lastMonth && selectedYear ? `${firstMonth} - ${lastMonth} ${selectedYear}` : "";
+
+  const totalIncome = chartData.reduce((sum, d) => sum + d.income, 0);
+  const totalExpenses = chartData.reduce((sum, d) => sum + d.expenses, 0);
+  let summaryMessage = "";
+  if (totalIncome > totalExpenses) {
+    summaryMessage = `You earned more than you spent over this period.`;
+  } else if (totalExpenses > totalIncome) {
+    summaryMessage = `You spent more than you earned over this period.`;
+  } else {
+    summaryMessage = `Your income and expenses were equal over this period.`;
+  }
 
   return (
     <MotionEffect
@@ -71,7 +74,7 @@ export default function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
       <Card>
         <CardHeader>
           <CardTitle>Income vs Expenses</CardTitle>
-          <CardDescription>January - June 2024</CardDescription>
+          <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig} className="w-full aspect-square max-h-[250px]">
@@ -91,12 +94,11 @@ export default function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
           </ChartContainer>
         </CardContent>
         <CardFooter className="flex-col items-start gap-2 text-sm">
-          <div className="flex gap-2 leading-none font-medium">
-            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-          </div>
           <div className="text-muted-foreground leading-none">
-            Showing Income vs Expenses trend for the last 6 months
+            Total Income: <strong>{formatCurrency(totalIncome)}</strong> | Total Expenses:{" "}
+            <strong>{formatCurrency(totalExpenses)}</strong>
           </div>
+          <div className="text-muted-foreground leading-none">{summaryMessage}</div>
         </CardFooter>
       </Card>
     </MotionEffect>

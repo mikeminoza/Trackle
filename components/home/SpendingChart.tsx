@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { TrendingUp } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
 
 import {
@@ -22,6 +21,8 @@ import { MotionEffect } from "../animate-ui/effects/motion-effect";
 import { SpendingBreakdown } from "@/types/dashboard";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { getCategoryLabel } from "@/constants/categories";
+import MonthFilter from "./MonthFilter";
+import { months } from "@/constants/months";
 
 const chartConfig = {
   amount: {
@@ -31,28 +32,54 @@ const chartConfig = {
 
 interface SpendingBreakdownProps {
   data?: SpendingBreakdown[];
+  selectedMonth: number | null;
+  selectedYear: number | null;
 }
 
-export default function SpendingChart({ data }: SpendingBreakdownProps) {
-  const chartData = React.useMemo(() => {
-    if (!data || data.length === 0) return [];
-
-    return data.map((item, index) => ({
+export default function SpendingChart({
+  data,
+  selectedMonth,
+  selectedYear,
+}: SpendingBreakdownProps) {
+  const chartData =
+    data?.map((item, index) => ({
       category: getCategoryLabel(item.category),
       amount: item.amount,
       fill: `hsl(var(--chart-${(index % 5) + 1}))`,
-    }));
-  }, [data]);
+    })) ?? [];
 
-  const totalAmount = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.amount, 0);
-  }, [chartData]);
+  const totalAmount = chartData.reduce((acc, curr) => acc + curr.amount, 0);
+
+  const monthName = selectedMonth
+    ? months.find((m) => Number(m.value) === selectedMonth)?.label
+    : "Recent months";
+
+  const description = `${monthName} ${selectedYear}`;
+
+  const topCategory =
+    chartData.length > 0
+      ? chartData.reduce((prev, curr) => (curr.amount > prev.amount ? curr : prev))
+      : null;
+
+  const summaryMessage = topCategory ? (
+    <>
+      Your highest spending category was <strong>{topCategory.category}</strong>.
+    </>
+  ) : (
+    "No spending data available for this month."
+  );
+
   return (
     <MotionEffect key={"spending"} slide={{ direction: "down" }} fade zoom inView delay={0.3 * 0.1}>
       <Card className="flex flex-col">
         <CardHeader className="items-center pb-0">
-          <CardTitle>Spending Breakdown</CardTitle>
-          <CardDescription>January – June 2024</CardDescription>
+          <div className="flex justify-between">
+            <div className="flex flex-col gap-1">
+              <CardTitle>Spending Breakdown</CardTitle>
+              <CardDescription>{description}</CardDescription>
+            </div>
+            <MonthFilter selectedMonth={selectedMonth} />
+          </div>
         </CardHeader>
 
         <CardContent className="flex-1 pb-0">
@@ -101,12 +128,7 @@ export default function SpendingChart({ data }: SpendingBreakdownProps) {
         </CardContent>
 
         <CardFooter className="flex-col gap-2 text-sm">
-          <div className="flex items-center gap-2 leading-none font-medium">
-            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-          </div>
-          <div className="text-muted-foreground leading-none">
-            Showing total expenses for the last 6 months
-          </div>
+          <div className="text-muted-foreground leading-none">{summaryMessage}</div>
         </CardFooter>
       </Card>
     </MotionEffect>
