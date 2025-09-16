@@ -95,8 +95,7 @@ export const getBudgets = async (
       if (filters.progress === "over100") return progress > 100;
       return true;
     });
-  }
-  console.log(budgets);
+  } 
   return budgets as BudgetWithSpent[];
 };
 

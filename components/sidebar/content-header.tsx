@@ -28,7 +28,7 @@ interface ContentHeaderProps {
 
 export function ContentHeader({ title, breadcrumbs = [] }: ContentHeaderProps) {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-40 w-full h-[64px] border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="px-6 py-4">
         <div className="flex items-center justify-between pl-8 lg:pl-0">
           <div className="flex flex-col gap-2">

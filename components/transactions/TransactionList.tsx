@@ -15,12 +15,17 @@ interface TransactionListProps {
 
 export function TransactionList({ transactions, filters }: TransactionListProps) {
   const grouped = Object.groupBy(transactions, (tx) =>
-    tx.created_at ? new Date(tx.created_at).toISOString().split("T")[0] : "unknown"
+    tx.date ? new Date(tx.date).toISOString().split("T")[0] : "unknown"
   );
+  const sortedEntries = Object.entries(grouped).sort(([dateA], [dateB]) => {
+    if (dateA === "unknown") return 1;
+    if (dateB === "unknown") return -1;
+    return new Date(dateB).getTime() - new Date(dateA).getTime();
+  });
 
   return (
     <div className="space-y-6">
-      {Object.entries(grouped).map(([date, txs = []], i) => {
+      {sortedEntries.map(([date, txs = []], i) => {
         const totalExpense = txs
           .filter((t) => t.type === "expense")
           .reduce((s, t) => s + t.amount, 0);

@@ -4,6 +4,7 @@ import { DollarSign, CreditCard, Wallet } from "lucide-react";
 import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { FinancialSummary as FinancialSummaryType } from "@/types/dashboard";
+import { months } from "@/constants/months";
 
 interface FinancialSummaryProps {
   summary?: FinancialSummaryType;
@@ -11,6 +12,11 @@ interface FinancialSummaryProps {
 
 export default function FinancialSummary({ summary }: FinancialSummaryProps) {
   const { balance = 0, income_this_month = 0, expense_this_month = 0 } = summary || {};
+
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
+  const monthName = months.find((m) => Number(m.value) === currentMonth)?.label;
+
   const items = [
     {
       title: "Total Balance",
@@ -23,7 +29,7 @@ export default function FinancialSummary({ summary }: FinancialSummaryProps) {
     {
       title: "This Month's Income",
       value: income_this_month,
-      description: "All income categories combined",
+      description: `${monthName} ${currentYear}'s Income`,
       icon: CreditCard,
       iconColor: "text-chart-3",
       bgColor: "bg-chart-3/10",
@@ -31,7 +37,7 @@ export default function FinancialSummary({ summary }: FinancialSummaryProps) {
     {
       title: "This Month's Expenses",
       value: expense_this_month,
-      description: "Sum of all outflows",
+      description: `${monthName} ${currentYear}'s Expenses`,
       icon: Wallet,
       iconColor: "text-chart-2",
       bgColor: "bg-chart-2/10",

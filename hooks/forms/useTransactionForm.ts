@@ -19,12 +19,14 @@ export default function useTransactionForm(transaction: Transaction | null) {
           title: transaction.title,
           amount: transaction.amount,
           category: transaction.category,
+          date: transaction.date
         }
       : {
           type: "expense",
           title: "",
           amount: 0,
           category: "",
+          date: new Date().toISOString().split("T")[0], 
         },
   });
 

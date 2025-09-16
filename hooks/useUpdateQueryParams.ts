@@ -7,9 +7,9 @@ export function useUpdateQueryParams() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  function setParam(key: string, value: string | undefined) {
-    const params = new URLSearchParams(searchParams);
+  const params = new URLSearchParams(searchParams);
 
+  function setParam(key: string, value: string | undefined) { 
     if (value && value !== "all") {
       params.set(key, value);
     } else {
@@ -20,8 +20,6 @@ export function useUpdateQueryParams() {
   }
 
   function resetParams(keys?: string[]) {
-    const params = new URLSearchParams(searchParams);
-
     if (keys && keys.length > 0) { 
       keys.forEach((key) => params.delete(key));
     } else { 

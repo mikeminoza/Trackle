@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
 import CategoryFilter from "../transactions/CategoryFilter";
 import { FormInput } from "../FormInput";
 import { BudgetDialogProps } from "@/types/budget";
