@@ -7,9 +7,10 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
       <AppSidebar />
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto lg:ml-0">
-        <div>{children}</div>
-      </main>
+      <div className="flex-1 flex flex-col">
+        {/* Header should go here if sticky */}
+        {children}
+      </div>
     </div>
   );
 }

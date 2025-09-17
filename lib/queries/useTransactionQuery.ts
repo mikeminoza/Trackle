@@ -8,7 +8,7 @@ export const useTransactionsQuery = (
   filters?: TransactionFilters, 
   limit = 15) =>
   useInfiniteQuery<Transaction[], Error>({
-    queryKey: ["transactions", userId, filters],
+    queryKey: ["transactions", userId, filters, limit],
     queryFn: ({ pageParam }) => getTransactions(userId!, pageParam as number, limit, filters),
     enabled: !!userId,
     initialPageParam: 0, 

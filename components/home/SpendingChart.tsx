@@ -11,12 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ChartConfig, ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { MotionEffect } from "../animate-ui/effects/motion-effect";
 import { SpendingBreakdown } from "@/types/dashboard";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
@@ -85,7 +80,24 @@ export default function SpendingChart({
         <CardContent className="flex-1 pb-0">
           <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
             <PieChart>
-              <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+              <ChartTooltip
+                cursor={false}
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length > 0) {
+                    const data = payload[0].payload;
+                    return (
+                      <div
+                        className="bg-background p-2 rounded shadow"
+                        style={{ borderLeft: `4px solid ${data.fill}` }}
+                      >
+                        <div className="font-semibold">{data.category}</div>
+                        <div>{formatCurrency(data.amount)}</div>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
               <Pie
                 data={chartData}
                 dataKey="amount"

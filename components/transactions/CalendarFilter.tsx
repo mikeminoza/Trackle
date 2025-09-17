@@ -27,15 +27,13 @@ export default function CalendarFilter() {
         <Calendar
           mode="single"
           selected={parsedDate}
-          captionLayout="dropdown"
           onSelect={(d) => {
             if (d) {
               setParam("date", format(d, "yyyy-MM-dd"));
-            } else {
-              setParam("date", undefined);
+              setOpen(false);
             }
-            setOpen(false);
           }}
+          captionLayout="dropdown"
         />
       </PopoverContent>
     </Popover>

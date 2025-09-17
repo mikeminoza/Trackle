@@ -33,12 +33,13 @@ export default function Page() {
     category: searchParams.get("category") ?? "all",
     minAmount: searchParams.get("minAmount") ? Number(searchParams.get("minAmount")) : undefined,
     maxAmount: searchParams.get("maxAmount") ? Number(searchParams.get("maxAmount")) : undefined,
+    date: searchParams.get("date") ?? "",
     period: (searchParams.get("period") as "all" | "today" | "thisWeek" | "thisMonth") ?? "all",
   };
 
   const { data: user } = useUser();
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useTransactionsQuery(user?.id, filters, 15);
+    useTransactionsQuery(user?.id, filters, 10);
 
   const transactions = data?.pages.flat() ?? [];
 
@@ -54,8 +55,7 @@ export default function Page() {
   return (
     <>
       <ContentHeader title="Transactions" breadcrumbs={[]} />
-
-      <div className="flex-1 w-full flex flex-col my-6 px-6">
+      <div className="flex-1 overflow-y-auto px-6 my-6 flex flex-col gap-4 outline-none focus:outline-none">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-8">
           <div className="relative w-full sm:w-64">
             <TransactionSearch />
@@ -88,7 +88,7 @@ export default function Page() {
         ) : isError ? (
           <ErrorQueryMessage />
         ) : !transactions || (transactions.length === 0 && !filtersApplied) ? (
-          <MotionEffect fade zoom slide={{ direction: "up" }} delay={0.3} inView>
+          <MotionEffect fade zoom slide={{ direction: "down" }} delay={0.3} inView>
             <div className="flex flex-col items-center justify-center py-20 px-6 bg-muted/30 border border-dashed rounded-2xl text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mb-4">
                 <Plus className="h-8 w-8 text-muted-foreground" />
@@ -103,7 +103,7 @@ export default function Page() {
           <NoResults message="No transactions match your filters" />
         ) : (
           <>
-            <TransactionList transactions={transactions} filters={filters} />
+            <TransactionList key={user?.id} transactions={transactions} filters={filters} />
 
             {hasNextPage && (
               <div className="mt-4 relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">

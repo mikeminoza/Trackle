@@ -65,7 +65,7 @@ export default function Page() {
     <>
       <ContentHeader title="Dashboard" breadcrumbs={[]} />
 
-      <div className="flex-1 w-full flex flex-col gap-4 my-6 px-6">
+      <div className="flex-1 overflow-y-auto px-6 my-6 flex flex-col gap-4 outline-none focus:outline-none">
         {isLoading ? (
           <DashboardSkeleton />
         ) : isError ? (
