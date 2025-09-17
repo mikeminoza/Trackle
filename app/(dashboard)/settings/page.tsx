@@ -28,7 +28,7 @@ export default function Page() {
     <>
       <ContentHeader title="Settings" breadcrumbs={[]} />
 
-      <div className="flex-1 w-full flex flex-col my-6 px-6 space-y-8">
+      <div className="flex-1 overflow-y-auto px-6 my-6 flex flex-col gap-4 outline-none focus:outline-none">
         <div className="space-y-2">
           <p className="text-muted-foreground text-pretty">
             Manage your profile, security, and account controls

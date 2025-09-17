@@ -59,7 +59,7 @@ export const getTransactions = async (
     .from("transactions")
     .select("*")
     .eq("user_id", userId)
-    .order("created_at", { ascending: false })
+    .order("date", { ascending: false })
     .range(from, to);
 
   if (filters?.search) {
@@ -76,15 +76,16 @@ export const getTransactions = async (
   }
   if (filters?.maxAmount !== undefined) {
     query = query.lte("amount", filters.maxAmount);
-  }
-  if (filters?.date) {
-    query = query.eq("date", filters.date);
-  }
+  }  
   if (filters?.period && filters.period !== "all") {
     const { start, end } = getDateRange(filters.period);
     query = query.gte("date", start.toISOString()).lte("date", end.toISOString());
   } else if (filters?.date) {
-    query = query.eq("date", filters.date);
+    const start = new Date(filters.date);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(filters.date);
+    end.setHours(23, 59, 59, 999);
+    query = query.gte("date", start.toISOString()).lte("date", end.toISOString());
   }
 
   const { data, error } = await query;

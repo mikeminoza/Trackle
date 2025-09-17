@@ -21,6 +21,7 @@ import { FormInput } from "../FormInput";
 import { useEffect, useState } from "react";
 import { TransactionDialogProps } from "@/types/transaction";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns/format";
 
 export default function TransactionDialog({
   mode,
@@ -135,7 +136,7 @@ export default function TransactionDialog({
               <Popover open={openPopover} onOpenChange={setOpenPopover}>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className="w-full justify-between font-normal">
-                    {dateInput ? new Date(dateInput).toLocaleDateString() : "Select date"}
+                    {dateInput ? format(dateInput, "MMMM d, yyyy") : "Select date"}
                     <ChevronDownIcon className="ml-2 h-4 w-4 opacity-50" />
                   </Button>
                 </PopoverTrigger>
@@ -143,13 +144,13 @@ export default function TransactionDialog({
                   <Calendar
                     mode="single"
                     selected={dateInput ? new Date(dateInput) : undefined}
-                    captionLayout="dropdown"
                     onSelect={(date) => {
                       if (date) {
                         form.setValue("date", date.toISOString());
                         setOpenPopover(false);
                       }
                     }}
+                    captionLayout="dropdown"
                   />
                 </PopoverContent>
               </Popover>

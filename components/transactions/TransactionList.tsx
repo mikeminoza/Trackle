@@ -41,27 +41,16 @@ export function TransactionList({ transactions, filters }: TransactionListProps)
               : format(new Date(date), "MMMM d, yyyy");
 
         return (
-          <MotionEffect
-            key={date}
-            slide={{ direction: "down" }}
-            fade
-            zoom
-            inView
-            delay={0.2 + i * 0.1}
-          >
+          <MotionEffect key={date} slide={{ direction: "down" }} fade zoom delay={0.2 + i * 0.1}>
             <section>
               <h2 className="flex items-center gap-2 text-sm font-semibold text-muted-foreground mb-3">
                 <span>{label}</span>
                 {(filters?.type === "expense" || filters?.type === "all" || !filters?.type) && (
-                  <Badge variant="outline" className="text-red-300">
-                    Spent {formatCurrency(totalExpense)}
-                  </Badge>
+                  <Badge variant="outline">Spent {formatCurrency(totalExpense)}</Badge>
                 )}
 
                 {(filters?.type === "income" || filters?.type === "all" || !filters?.type) && (
-                  <Badge variant="outline" className="text-green-300">
-                    Earned {formatCurrency(totalIncome)}
-                  </Badge>
+                  <Badge variant="outline">Earned {formatCurrency(totalIncome)}</Badge>
                 )}
               </h2>
               <ul className="divide-y bg-card border">

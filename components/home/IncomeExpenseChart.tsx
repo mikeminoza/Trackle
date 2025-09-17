@@ -10,16 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ChartConfig, ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { MotionEffect } from "../animate-ui/effects/motion-effect";
 import { TransactionAggregate } from "@/types/dashboard";
 import { monthOrder } from "@/constants/months";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { capitalizeWords } from "@/lib/utils/capitalizeWords";
 
 const chartConfig = {
   income: {
@@ -87,7 +83,27 @@ export default function IncomeExpenseChart({ data, selectedYear }: IncomeExpense
                 axisLine={false}
                 tickFormatter={(value) => value.slice(0, 3)}
               />
-              <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
+              <ChartTooltip
+                cursor={false}
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length > 0) {
+                    return (
+                      <div className="bg-background p-2 rounded shadow">
+                        {payload.map((p) => (
+                          <div key={p.dataKey} className="flex items-center gap-2">
+                            <span className="w-3 h-3" style={{ backgroundColor: p.fill }} />
+                            <span>
+                              {capitalizeWords(typeof p.name === "string" ? p.name : "")}:{" "}
+                              {formatCurrency(typeof p.value === "number" ? p.value : 0)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
               <Bar dataKey="income" fill={chartConfig.income.color} radius={4} />
               <Bar dataKey="expenses" fill={chartConfig.expenses.color} radius={4} />
             </BarChart>

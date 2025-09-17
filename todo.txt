@@ -2,13 +2,9 @@ TODO
  
 1. Make ICON for the system
 2. Setup the Gemini's config or systems intruction 
-3. Transaction (edit and delete)
-4. Hide the spent if the expense filter is on (vice-versa)
-5. Calendar filter not working properly
-6. Add the database and supabase types in the .gitignore+ 
-7. Fix the group of the transaction items 
-8. Remove all the console
-9. Fix header scroll issue
-10. Transaction filter not working properly
-11. Calendar filter not working properly
-12. Charts tooltip colors not showing
+3. Remove all the console 
+4. Add the database and supabase types in the .gitignore+   
+5. Transaction filter not working properly
+6. Calendar filter not working properly (dropdown keeps closing) 
+7. Category filter is not scrolling
+8. Create a separate GET for the year in spending breakdown
