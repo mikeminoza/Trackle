@@ -27,6 +27,7 @@ import CategoryFilter from "../transactions/CategoryFilter";
 import { FormInput } from "../FormInput";
 import { BudgetDialogProps } from "@/types/budget";
 import useBudgetForm from "@/hooks/forms/useBudgetForm";
+import { format } from "date-fns";
 
 export default function BudgetDialog({
   mode,
@@ -97,7 +98,7 @@ export default function BudgetDialog({
               placeholder="₱5000"
             />
 
-            {/* Start Date */}
+            {/* Date  */}
             <div className="space-y-2">
               <FormLabel
                 className={cn(
@@ -110,7 +111,7 @@ export default function BudgetDialog({
               <Popover open={openPopover} onOpenChange={setOpenPopover}>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className="w-full justify-between font-normal">
-                    {startDate ? new Date(startDate).toLocaleDateString() : "Select date"}
+                    {startDate ? format(startDate, "MMMM d, yyyy") : "Select date"}
                     <ChevronDownIcon className="ml-2 h-4 w-4 opacity-50" />
                   </Button>
                 </PopoverTrigger>
@@ -118,13 +119,13 @@ export default function BudgetDialog({
                   <Calendar
                     mode="single"
                     selected={startDate ? new Date(startDate) : undefined}
-                    captionLayout="dropdown"
                     onSelect={(date) => {
                       if (date) {
                         form.setValue("start_date", date.toISOString());
                         setOpenPopover(false);
                       }
                     }}
+                    captionLayout="dropdown"
                   />
                 </PopoverContent>
               </Popover>

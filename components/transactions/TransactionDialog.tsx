@@ -32,6 +32,7 @@ export default function TransactionDialog({
 }: TransactionDialogProps) {
   const { form, onSubmit, isLoading, isSuccessful } = useTransactionForm(transaction);
   const [openPopover, setOpenPopover] = useState(false);
+
   const type = form.watch("type");
   const category = form.watch("category");
   const dateInput = form.watch("date");
@@ -160,6 +161,7 @@ export default function TransactionDialog({
                 </p>
               )}
             </div>
+
             <DialogFooter className="mt-3">
               <DialogClose asChild disabled={isLoading}>
                 <Button variant="outline">Cancel</Button>

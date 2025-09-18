@@ -26,6 +26,7 @@ import { sendMessage } from "@/lib/gemini/ai";
 import { Response } from "@/components/response";
 import { Loader } from "@/components/ai-elements/loader";
 import { LockIcon } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Page() {
   const [model, setModel] = useState<string>(models[0].id);
@@ -42,10 +43,12 @@ export default function Page() {
     setInput("");
 
     try {
+      setShowSuggestions(false);
       const reply = await sendMessage(updatedMessages, model);
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch (error) {
       console.error("AI request failed:", error);
+      toast.error("Something went wrong. Please try again later!");
     } finally {
       setIsLoading(false);
     }

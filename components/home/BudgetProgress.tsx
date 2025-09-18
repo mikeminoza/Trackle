@@ -14,7 +14,7 @@ interface BudgetProgressProps {
 
 export default function BudgetProgress({ budgets = [] }: BudgetProgressProps) {
   return (
-    <MotionEffect key="budget" slide={{ direction: "down" }} fade zoom inView delay={0.3 * 0.1}>
+    <MotionEffect key="budget" slide={{ direction: "down" }} fade zoom delay={0.3 * 0.1}>
       <Card className="shadow-sm">
         <CardHeader className="pb-2">
           <CardTitle className="text-base font-medium">Budget Progress</CardTitle>

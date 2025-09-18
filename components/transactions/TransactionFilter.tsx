@@ -81,13 +81,13 @@ export default function TransactionFilter() {
               <Input
                 type="number"
                 placeholder="Min ₱"
-                defaultValue={searchParams.get("minAmount") ?? ""}
+                value={searchParams.get("minAmount") ?? ""}
                 onChange={(e) => setParam("minAmount", e.target.value)}
               />
               <Input
                 type="number"
                 placeholder="Max ₱"
-                defaultValue={searchParams.get("maxAmount") ?? ""}
+                value={searchParams.get("maxAmount") ?? ""}
                 onChange={(e) => setParam("maxAmount", e.target.value)}
               />
             </div>

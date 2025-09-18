@@ -75,14 +75,7 @@ export default function CashFlowTrendChart({ data, selectedYear }: CashFlowTrend
         : "Your income and expenses were equal over this period.";
 
   return (
-    <MotionEffect
-      key={"cashflowtrend"}
-      slide={{ direction: "down" }}
-      fade
-      zoom
-      inView
-      delay={0.3 * 0.1}
-    >
+    <MotionEffect key={"cashflowtrend"} slide={{ direction: "down" }} fade zoom delay={0.3 * 0.1}>
       <Card>
         <CardHeader>
           <CardTitle>Cash Flow Trend</CardTitle>
