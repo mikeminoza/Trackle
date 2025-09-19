@@ -104,7 +104,6 @@ export default function Page() {
           </Suggestions>
         )}
 
-        {/* Input fixed at bottom */}
         <PromptInput onSubmit={handleSubmit} className="mt-2 relative">
           <PromptInputTextarea onChange={(e) => setInput(e.target.value)} value={input} />
           <PromptInputToolbar>

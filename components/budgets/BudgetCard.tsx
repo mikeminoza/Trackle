@@ -10,6 +10,7 @@ import { getCategoryLabel } from "@/constants/categories";
 import BudgetDialog from "./BudgetDialog";
 import DeleteBudgetDialog from "./DeleteBudgetDialog";
 import ActionsMenu from "../ActionsMenu";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 export default function BudgetCard({ budget }: { budget: BudgetWithSpent }) {
   const [editOpen, setEditOpen] = useState(false);
@@ -24,14 +25,19 @@ export default function BudgetCard({ budget }: { budget: BudgetWithSpent }) {
           <CardTitle className="text-lg font-semibold">
             {getCategoryLabel(budget.category)}
           </CardTitle>
-          <CardDescription className="mt-1 text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">
-              ₱{budget.limit_amount.toLocaleString()}
-            </span>{" "}
-            limit •
-            <span className="font-medium text-foreground"> ₱{budget.spent.toLocaleString()}</span>{" "}
-            spent
+          <CardDescription className="mt-1 text-sm text-muted-foreground flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
+            <span>
+              <span className="font-medium text-foreground">
+                {formatCurrency(budget.limit_amount)}
+              </span>{" "}
+              limit
+            </span>
+            <span>
+              <span className="font-medium text-foreground">{formatCurrency(budget.spent)}</span>{" "}
+              spent
+            </span>
           </CardDescription>
+
           <div className="mt-1 flex flex-wrap gap-1 sm:gap-2 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <CalendarRange className="h-3 w-3" /> {capitalizeWords(budget.period)}

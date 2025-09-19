@@ -4,6 +4,7 @@ TODO
 2. Setup the Gemini's config or systems intruction 
 3. Remove all the console 
 4. Add the database and supabase types in the .gitignore+   
-5. Transaction filter not working properly  
-7. Create a separate GET for the year in spending breakdown
-8. Budget should not be duplicate
+5. Transaction filter not working properly   
+6. Budget should not be duplicate
+7. Ai insights can be closed
+8. Add Ai insights skeleton and error components
