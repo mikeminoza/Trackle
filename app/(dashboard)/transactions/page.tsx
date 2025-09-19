@@ -55,6 +55,7 @@ export default function Page() {
   return (
     <>
       <ContentHeader title="Transactions" breadcrumbs={[]} />
+
       <div className="flex-1 overflow-y-auto px-6 my-6 flex flex-col gap-4 outline-none focus:outline-none">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-8">
           <div className="relative w-full sm:w-64">
@@ -88,7 +89,7 @@ export default function Page() {
         ) : isError ? (
           <ErrorQueryMessage />
         ) : !transactions || (transactions.length === 0 && !filtersApplied) ? (
-          <MotionEffect fade zoom slide={{ direction: "down" }} delay={0.3} inView>
+          <MotionEffect fade zoom slide={{ direction: "up" }} delay={0.3} inView>
             <div className="flex flex-col items-center justify-center py-20 px-6 bg-muted/30 border border-dashed rounded-2xl text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mb-4">
                 <Plus className="h-8 w-8 text-muted-foreground" />

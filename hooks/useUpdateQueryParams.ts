@@ -16,7 +16,7 @@ export function useUpdateQueryParams() {
       params.delete(key);
     }
 
-    router.replace(`${pathname}?${params.toString()}`);
+    router.replace(`${pathname}?${params.toString()}`, {scroll: false});
   }
 
   function resetParams(keys?: string[]) {
@@ -26,7 +26,7 @@ export function useUpdateQueryParams() {
       params.forEach((_, key) => params.delete(key));
     }
 
-    router.replace(`${pathname}?${params.toString()}`);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
   
   function hasFiltersApplied(keys?: string[]) {
