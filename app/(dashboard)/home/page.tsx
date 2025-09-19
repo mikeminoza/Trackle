@@ -15,6 +15,7 @@ import DashboardSkeleton from "@/components/skeletons/DashboardSkeleton";
 import ErrorMessage from "@/components/ErrorMessage";
 import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
 import YearFilter from "@/components/home/YearFilter";
+import AiInsights from "@/components/home/AiInsights";
 
 export default function Page() {
   const { data: user } = useUser();
@@ -74,6 +75,16 @@ export default function Page() {
           <>
             {/* dashboard kpi  */}
             <FinancialSummary summary={financialSummary?.[0]} />
+
+            <AiInsights
+              userId={user?.id}
+              payload={{
+                financialSummary: financialSummary?.[0] ?? null,
+                aggregates: aggregates ?? null,
+                spendingBreakdown: spendingBreakdown ?? null,
+                budgets: budgets ?? null,
+              }}
+            />
             {/* year filter  */}
             <YearFilter availableYears={availableYears} selectedYear={selectedYear} />
             {/* charts  */}

@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     console.error("AI Route Error:", err);
     return NextResponse.json(
       { error: "Something went wrong while processing your request." },
-      { status: 500 }
+      { status: 400 }
     );
   }
 }
