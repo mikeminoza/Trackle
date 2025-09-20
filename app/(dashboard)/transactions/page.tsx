@@ -56,7 +56,7 @@ export default function Page() {
     <>
       <ContentHeader title="Transactions" breadcrumbs={[]} />
 
-      <div className="flex-1 overflow-y-auto px-6 my-6 flex flex-col gap-4 outline-none focus:outline-none">
+      <div className="flex-1 overflow-y-auto px-6 my-3 flex flex-col gap-4 outline-none focus:outline-none">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-8">
           <div className="relative w-full sm:w-64">
             <TransactionSearch />

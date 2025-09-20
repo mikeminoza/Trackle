@@ -68,7 +68,7 @@ export default function SpendingChart({
     <MotionEffect key={"spending"} slide={{ direction: "down" }} fade zoom delay={0.3 * 0.1}>
       <Card className="flex flex-col">
         <CardHeader className="items-center pb-0">
-          <div className="flex justify-between">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div className="flex flex-col gap-1">
               <CardTitle>Spending Breakdown</CardTitle>
               <CardDescription>{description}</CardDescription>

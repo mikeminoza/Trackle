@@ -19,7 +19,7 @@ import { Plus } from "lucide-react";
 
 function AddBudgetButton({ onClick }: { onClick: () => void }) {
   return (
-    <div className="flex items-center justify-between mb-4">
+    <div className="flex items-center justify-between">
       <MotionEffect slide={{ direction: "down" }} fade zoom inView delay={0.3}>
         <Button className="gap-2" onClick={onClick}>
           <Plus className="h-4 w-4" /> Add Budget
@@ -70,7 +70,7 @@ export default function BudgetPage() {
     <>
       <ContentHeader title="Budgets" breadcrumbs={[]} />
 
-      <div className="flex-1 overflow-y-auto px-6 my-6 flex flex-col gap-4 outline-none focus:outline-none">
+      <div className="flex-1 overflow-y-auto px-6 my-3 flex flex-col gap-4 outline-none focus:outline-none">
         {/* Budget Summary  */}
         <BudgetSummary
           summary={budgetSummary}
