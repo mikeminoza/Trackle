@@ -9,6 +9,8 @@ export default function DashboardSkeleton() {
         ))}
       </div>
 
+      <Skeleton className="h-10 w-full rounded-lg" />
+
       <Skeleton className="h-64 w-full rounded-lg" />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

@@ -40,7 +40,7 @@ export default function TransactionFilter() {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="grid flex-1 auto-rows-min gap-6 px-4 mt-6">
+        <div className="flex-1 overflow-y-auto px-4 space-y-6">
           {/* Calendar Filter */}
           <div className="grid gap-3">
             <Label>Date</Label>
@@ -94,7 +94,7 @@ export default function TransactionFilter() {
           </div>
         </div>
 
-        <SheetFooter className="mt-8">
+        <SheetFooter>
           <Button
             variant="outline"
             onClick={() =>

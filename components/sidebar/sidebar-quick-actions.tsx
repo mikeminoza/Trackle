@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, DollarSign, TrendingUp } from "lucide-react";
+import { DollarSign, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const quickActions = [
@@ -14,11 +14,6 @@ const quickActions = [
     title: "Add Expense",
     href: "/transactions/add?type=expense",
     icon: DollarSign,
-  },
-  {
-    title: "Set Reminder",
-    href: "/recurring/add",
-    icon: Calendar,
   },
 ];
 

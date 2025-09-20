@@ -98,7 +98,7 @@ export default function BudgetDialog({
               placeholder="₱5000"
             />
 
-            {/* Date  */}
+            {/* Start Date  */}
             <div className="space-y-2">
               <FormLabel
                 className={cn(
@@ -119,13 +119,13 @@ export default function BudgetDialog({
                   <Calendar
                     mode="single"
                     selected={startDate ? new Date(startDate) : undefined}
+                    captionLayout="dropdown"
                     onSelect={(date) => {
                       if (date) {
                         form.setValue("start_date", date.toISOString());
                         setOpenPopover(false);
                       }
                     }}
-                    captionLayout="dropdown"
                   />
                 </PopoverContent>
               </Popover>

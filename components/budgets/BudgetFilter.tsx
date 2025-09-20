@@ -38,7 +38,7 @@ export default function BudgetFilter() {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="grid flex-1 auto-rows-min gap-6 px-4 mt-6">
+        <div className="flex-1 overflow-y-auto px-4 space-y-6">
           {/* Status */}
           <div className="grid gap-3">
             <Label>Status</Label>
@@ -141,7 +141,7 @@ export default function BudgetFilter() {
           </div>
         </div>
 
-        <SheetFooter className="mt-8">
+        <SheetFooter>
           <Button
             variant="outline"
             onClick={() =>

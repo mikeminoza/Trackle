@@ -145,13 +145,13 @@ export default function TransactionDialog({
                   <Calendar
                     mode="single"
                     selected={dateInput ? new Date(dateInput) : undefined}
+                    captionLayout="dropdown"
                     onSelect={(date) => {
                       if (date) {
                         form.setValue("date", date.toISOString());
                         setOpenPopover(false);
                       }
                     }}
-                    captionLayout="dropdown"
                   />
                 </PopoverContent>
               </Popover>

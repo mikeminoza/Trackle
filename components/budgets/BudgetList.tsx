@@ -13,7 +13,6 @@ export default function BudgetList({ budgets }: { budgets: BudgetWithSpent[] }) 
           slide={{ direction: "down" }}
           fade
           zoom
-          inView
           delay={0.3 + index * 0.1}
         >
           <BudgetCard budget={budget} />
