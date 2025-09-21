@@ -4,6 +4,6 @@ TODO
 2. Setup the Gemini's config or systems intruction 
 3. Remove all the console 
 4. Add the database and supabase types in the .gitignore+   
-5. Transaction filter not working properly   
-6. Budget should not be duplicate
-7. Improve search query function
+5. Transaction filter not working properly    
+6. Add staletime and gctime for the queries
+7. Fix transaction page (keeps reloading)
