@@ -1,15 +1,15 @@
-import { createClient } from '@/lib/supabase/client';
-import { getDateRange } from '@/lib/utils/getDateRange';
-import { Transaction, TransactionInsert } from '@/types/db';
-import { TransactionUpdate } from '@/types/db';
-import { TransactionFilters } from '@/types/transaction';
+import { createClient } from "@/lib/supabase/client";
+import { getDateRange } from "@/lib/utils/getDateRange";
+import { Transaction, TransactionInsert } from "@/types/db";
+import { TransactionUpdate } from "@/types/db";
+import { TransactionFilters } from "@/types/transaction";
 
 const supabase = createClient();
 
 // Insert a new transaction
 export const createTransactionService = async (newTransaction: TransactionInsert) => {
   const { data, error } = await supabase
-    .from('transactions')
+    .from("transactions")
     .insert(newTransaction)
     .select()
     .single();
@@ -47,12 +47,13 @@ export const deleteTransactionService = async (id: string) => {
   return data as Transaction;
 };
 
-// Fetch transactions 
+// Fetch transactions
 export const getTransactions = async (
-  userId: string, 
-  page: number, 
-  limit = 15, 
-  filters?: TransactionFilters) => {
+  userId: string,
+  page: number,
+  limit = 15,
+  filters?: TransactionFilters
+) => {
   const from = page * limit;
   const to = from + limit - 1;
   let query = supabase
@@ -63,7 +64,7 @@ export const getTransactions = async (
     .range(from, to);
 
   if (filters?.search) {
-    query = query.ilike("title", `%${filters.search}%`); 
+    query = query.or(`title.ilike.%${filters.search}%,title.ilike.${filters.search}%`);
   }
   if (filters?.type && filters.type !== "all") {
     query = query.eq("type", filters.type);
@@ -76,7 +77,7 @@ export const getTransactions = async (
   }
   if (filters?.maxAmount !== undefined) {
     query = query.lte("amount", filters.maxAmount);
-  }  
+  }
   if (filters?.period && filters.period !== "all") {
     const { start, end } = getDateRange(filters.period);
     query = query.gte("date", start.toISOString()).lte("date", end.toISOString());

@@ -38,10 +38,14 @@ export default function Page() {
   };
 
   const { data: user } = useUser();
-  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useTransactionsQuery(user?.id, filters, 10);
-
-  const transactions = data?.pages.flat() ?? [];
+  const {
+    data: transactions = [],
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useTransactionsQuery(user?.id, filters, 10);
 
   const filtersApplied = hasFiltersApplied([
     "query",
@@ -104,12 +108,14 @@ export default function Page() {
           <NoResults message="No transactions match your filters" />
         ) : (
           <>
-            <TransactionList key={user?.id} transactions={transactions} filters={filters} />
+            <TransactionList transactions={transactions} filters={filters} />
 
             {hasNextPage && (
               <div className="mt-4 relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                 <button
-                  onClick={() => fetchNextPage()}
+                  onClick={() => {
+                    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+                  }}
                   disabled={isFetchingNextPage}
                   className="bg-background text-muted-foreground relative z-10 px-3 py-1 rounded-md hover:bg-muted/50 transition"
                 >

@@ -9,26 +9,26 @@ export function useUpdateQueryParams() {
 
   const params = new URLSearchParams(searchParams);
 
-  function setParam(key: string, value: string | undefined) { 
+  function setParam(key: string, value: string | undefined) {
     if (value && value !== "all") {
       params.set(key, value);
     } else {
       params.delete(key);
     }
 
-    router.replace(`${pathname}?${params.toString()}`, {scroll: false});
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
   function resetParams(keys?: string[]) {
-    if (keys && keys.length > 0) { 
+    if (keys && keys.length > 0) {
       keys.forEach((key) => params.delete(key));
-    } else { 
+    } else {
       params.forEach((_, key) => params.delete(key));
     }
 
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
-  
+
   function hasFiltersApplied(keys?: string[]) {
     if (!keys || keys.length === 0) {
       return Array.from(searchParams.keys()).length > 0;
