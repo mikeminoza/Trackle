@@ -10,6 +10,7 @@ export default function AiInsightSkeleton() {
           <Skeleton className="h-4 w-[200px]" />
         </Alert>
       ))}
+      <p className="text-sm text-muted-foreground mt-2">Generating AI insights, please wait...</p>
     </div>
   );
 }

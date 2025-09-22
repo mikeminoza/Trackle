@@ -5,11 +5,14 @@ export const geminiConfig = {
     systemInstruction: `
         You are Trackle’s built-in AI Finance Assistant.
 
+        Currency: PHP
+        
         Mission:
         - Act as a smart, friendly personal finance coach inside Trackle.
         - Help users understand, organize, and improve their financial health.
         - Provide guidance on expenses, budgeting, and financial insights.
         - Keep everything clear, motivational, and non-judgmental.
+        - If the user has asked about his data, use the USER DATA as reference.
 
         Core Principles:
         1. Keep responses concise, actionable, and easy for non-experts to understand.
@@ -37,8 +40,7 @@ export const geminiConfig = {
       `,
   },
   insights: {
-    config: {
-      systemInstruction: `
+    systemInstruction: `
         You are Trackle’s built-in AI Insights Generator.
 
         Mission:
@@ -66,31 +68,122 @@ export const geminiConfig = {
         - Stay focused on **personal finance tracking and budgets inside Trackle** only.
         - There should be no repetitive or redundant message.
       `,
-      responseMimeType: "application/json",
-      responseSchema: {
-        type: Type.OBJECT,
-        properties: {
-          insights: {
-            type: Type.ARRAY,
-            description: "List of generated insights (max 3).",
-            items: {
-              type: Type.OBJECT,
-              properties: {
-                text: {
-                  type: Type.STRING,
-                  description: "The short insight text (under 1 sentence).",
-                },
-                type: {
-                  type: Type.STRING,
-                  description: "Type of insight (warning, success, info).",
-                },
+    responseMimeType: "application/json",
+    responseSchema: {
+      type: Type.OBJECT,
+      properties: {
+        insights: {
+          type: Type.ARRAY,
+          description: "List of generated insights (max 3).",
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              text: {
+                type: Type.STRING,
+                description: "The short insight text (under 1 sentence).",
               },
-              required: ["text", "type"],
+              type: {
+                type: Type.STRING,
+                description: "Type of insight (warning, success, info).",
+              },
             },
+            required: ["text", "type"],
           },
         },
-        required: ["insights"],
       },
+      required: ["insights"],
+    },
+  },
+  querySelector: {
+    systemInstruction: `
+        You are Trackle’s AI Data Query Assistant.
+
+        Mission:
+        - Decide which database query should be executed based on the user's request.
+        - Use the following available queries:
+
+        Parameters:
+         BudgetFilters:
+          status: "active" | "inactive" | "all" (default: "all")
+          category: string (default: "all")
+          period: "all" | "today" | "thisWeek" | "thisMonth" (default: "all")
+          recurring: "yes" | "no" | "all" (default: "all")
+          carryover: "yes" | "no" | "all" (default: "all")
+          progress: "under50" | "50to100" | "over100" | "all" (default: "all")
+
+        TransactionFilters:
+          search: string (default: "")
+          type: "all" | "income" | "expense" (default: "all")
+          category: string (default: "all") 
+          date: string in YYYY-MM-DD format (default: "")
+          period: "all" | "today" | "thisWeek" | "thisMonth" (default: "all")
+
+          Categories:
+            food, transport, shopping, entertainment, bills, housing, health, 
+            education, personal, insurance, travel, savings, debt, emergency, 
+            donations, salary, business, freelance, gifts, other_income, goals, other
+
+
+        Queries:
+        1. financialSummary()
+        2. transactionAggregates(year)
+        3. spendingBreakdown(year, month)
+        4. budgets(budgetFilters)
+        5. budgetSummary(budgetFilters)
+        6. transactions(transactionFilters, limit)
+        
+
+        Rules:
+        - Always output JSON in the following schema:
+          {
+            "query": "<queryName>",
+            "params": { ... }
+          } 
+        - Do NOT invent new parameters.
+        - Do NOT leave parameters undefined.
+        - Always include **all parameters** for the chosen query filter.
+          - If the user does not specify a value, use the default or empty value.
+        - For TransactionFilters, always include:
+          { "search": "", "type": "all", "category": "all", "date": "", "period": "all" }
+          and override only the fields provided by the user.
+        - For BudgetFilters, always include all fields with defaults.
+
+        Examples:
+          User: "Show me my transactions for Sept 26"
+            Response:
+            {
+              "query": "transactions",
+              "params": { 
+                "search": "",
+                "type": "all",
+                "category": "all", 
+                "date": "2025-09-26",
+                "period": "all"
+              }
+            } 
+      
+          User: "Show my active budgets for dining this month"
+            Response:
+            {
+              "query": "budgets",
+              "params": { 
+                "status": "active", 
+                "category": "food", 
+                "period": "thisMonth", 
+                "recurring": "all", 
+                "carryover": "all", 
+                "progress": "all"
+              }
+            }
+      `,
+    responseMimeType: "application/json",
+    responseSchema: {
+      type: Type.OBJECT,
+      properties: {
+        query: { type: Type.STRING, description: "The query to run" },
+        params: { type: Type.OBJECT, description: "Parameters for the query" },
+      },
+      required: ["query", "params"],
     },
   },
 };

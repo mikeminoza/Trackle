@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/select";
 
 export default function Page() {
-  const [addOpen, setAddOpen] = useState(false);
   const { searchParams, setParam, hasFiltersApplied } = useUpdateQueryParams();
   const filters: TransactionFilters = {
     search: searchParams.get("query") ?? "",
@@ -37,16 +36,6 @@ export default function Page() {
     period: (searchParams.get("period") as "all" | "today" | "thisWeek" | "thisMonth") ?? "all",
   };
 
-  const { data: user } = useUser();
-  const {
-    data: transactions = [],
-    isLoading,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useTransactionsQuery(user?.id, filters, 10);
-
   const filtersApplied = hasFiltersApplied([
     "query",
     "type",
@@ -56,6 +45,18 @@ export default function Page() {
     "date",
     "period",
   ]);
+
+  const [addOpen, setAddOpen] = useState(false);
+  const { data: user } = useUser();
+  const {
+    data: transactions,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useTransactionsQuery(user?.id, filters, 10);
+
   return (
     <>
       <ContentHeader title="Transactions" breadcrumbs={[]} />

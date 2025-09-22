@@ -1,7 +1,7 @@
 import { Transaction } from "./db";
 
 export type TransactionDialogProps = {
-  mode?: "add" | "edit"; 
+  mode?: "add" | "edit";
   label?: "Add" | "Edit";
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -12,7 +12,7 @@ export type DeleteTransactionDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   transaction: Transaction;
-}
+};
 
 export type TransactionFilters = {
   search?: string;

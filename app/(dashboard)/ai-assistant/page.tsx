@@ -22,7 +22,7 @@ import { Message, MessageContent } from "@/components/message";
 import { Suggestions, Suggestion } from "@/components/suggestion";
 import { suggestions } from "@/constants/ai-suggestions";
 import { ChatMessage } from "@/types/ai";
-import { sendMessage } from "@/lib/gemini/ai";
+import { useSendMessage } from "@/hooks/gemini/useSendMessage";
 import { Response } from "@/components/response";
 import { Loader } from "@/components/ai-elements/loader";
 import { LockIcon } from "lucide-react";
@@ -34,6 +34,7 @@ export default function Page() {
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const sendMessage = useSendMessage();
 
   const sendChat = async (content: string) => {
     setIsLoading(true);
