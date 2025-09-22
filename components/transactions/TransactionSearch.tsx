@@ -2,22 +2,24 @@
 import { Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
-import { useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
+import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function TransactionSearch() {
-  const [term, setTerm] = useState("");
-  const [debouncedTerm] = useDebounce(term, 400);
   const { setParam, searchParams } = useUpdateQueryParams();
+  const [term, setTerm] = useState(() => searchParams.get("query") || "");
 
-  useEffect(() => {
-    const existing = searchParams.get("query") || "";
-    setTerm(existing);
-  }, [searchParams]);
+  const debouncedSetParam = useDebouncedCallback((value: string) => {
+    const current = searchParams.get("query") || undefined;
+    if (value !== current) {
+      setParam("query", value || undefined);
+    }
+  }, 400);
 
-  useEffect(() => {
-    setParam("query", debouncedTerm || undefined);
-  }, [debouncedTerm, setParam]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTerm(e.target.value);
+    debouncedSetParam(e.target.value);
+  };
 
   return (
     <>
@@ -26,7 +28,7 @@ export default function TransactionSearch() {
         placeholder="Search transactions..."
         className="pl-8"
         value={term}
-        onChange={(e) => setTerm(e.target.value)}
+        onChange={handleChange}
       />
     </>
   );

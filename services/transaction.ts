@@ -3,6 +3,8 @@ import { getDateRange } from "@/lib/utils/getDateRange";
 import { Transaction, TransactionInsert } from "@/types/db";
 import { TransactionUpdate } from "@/types/db";
 import { TransactionFilters } from "@/types/transaction";
+import { Database } from "@/utils/database.types";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 const supabase = createClient();
 
@@ -52,11 +54,13 @@ export const getTransactions = async (
   userId: string,
   page: number,
   limit = 15,
-  filters?: TransactionFilters
+  filters?: TransactionFilters,
+  client?: SupabaseClient<Database>
 ) => {
+  const supabaseClient = client ?? supabase;
   const from = page * limit;
   const to = from + limit - 1;
-  let query = supabase
+  let query = supabaseClient
     .from("transactions")
     .select("*")
     .eq("user_id", userId)
@@ -64,7 +68,8 @@ export const getTransactions = async (
     .range(from, to);
 
   if (filters?.search) {
-    query = query.or(`title.ilike.%${filters.search}%,title.ilike.${filters.search}%`);
+    const normalizedSearch = filters.search.replace(/\s+/g, "").toLowerCase();
+    query = query.ilike("title", `%${normalizedSearch}%`);
   }
   if (filters?.type && filters.type !== "all") {
     query = query.eq("type", filters.type);
