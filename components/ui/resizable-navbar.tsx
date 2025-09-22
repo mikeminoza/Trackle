@@ -4,6 +4,7 @@ import { IconMenu2, IconX } from "@tabler/icons-react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "motion/react";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
+import Image from "next/image";
 
 interface NavbarProps {
   children: React.ReactNode;
@@ -208,7 +209,7 @@ export const NavbarLogo = () => {
       href="/"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
     >
-      <img src="https://assets.aceternity.com/logo-dark.png" alt="logo" width={30} height={30} />
+      <Image src="https://assets.aceternity.com/logo-dark.png" alt="logo" width={30} height={30} />
       <span className="font-medium text-black dark:text-white">Trackle</span>
     </Link>
   );
