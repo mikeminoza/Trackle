@@ -9,9 +9,11 @@ import {
   PromptInputModelSelect,
   PromptInputModelSelectContent,
   PromptInputModelSelectItem,
+  PromptInputButton,
+  PromptInputTools,
 } from "@/components/prompt-input";
 import { ContentHeader } from "@/components/sidebar/content-header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { models } from "@/constants/ai-models";
 import {
   Conversation,
@@ -25,46 +27,67 @@ import { ChatMessage } from "@/types/ai";
 import { useSendMessage } from "@/hooks/gemini/useSendMessage";
 import { Response } from "@/components/response";
 import { Loader } from "@/components/ai-elements/loader";
-import { LockIcon } from "lucide-react";
+import { LockIcon, MicIcon } from "lucide-react";
+import { useChatStore } from "@/store/useChatStore";
+import { useDailyChatReset } from "@/hooks/useDailyChatReset";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import { toast } from "sonner";
 
 export default function Page() {
+  const { messages, addMessage } = useChatStore();
   const [model, setModel] = useState<string>(models[0].id);
   const [input, setInput] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [useMicrophone, setUseMicrophone] = useState(false);
+  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
+
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      toast.error("Your browser does not support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  useEffect(() => {
+    if (transcript) {
+      setInput(transcript);
+    }
+  }, [transcript]);
+
   const sendMessage = useSendMessage();
 
-  const sendChat = async (content: string) => {
+  const sendChat = async (input: string) => {
+    if (!input.trim()) return;
     setIsLoading(true);
-    const newMessage: ChatMessage = { role: "user", content };
-    const updatedMessages = [...messages, newMessage];
-    setMessages(updatedMessages);
-    setInput("");
+    const newMessage: ChatMessage = { role: "user", content: input };
+    addMessage(newMessage);
 
     try {
       setShowSuggestions(false);
-      const reply = await sendMessage(updatedMessages, model);
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      const fullConversation = useChatStore.getState().messages;
+      const reply = await sendMessage(fullConversation, model);
+      addMessage({ role: "assistant", content: reply });
     } catch (error) {
       console.error("AI request failed:", error);
       toast.error("Something went wrong. Please try again later!");
     } finally {
       setIsLoading(false);
+      setInput("");
+      resetTranscript();
     }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!input.trim()) return;
     sendChat(input);
   };
 
   const handleSuggestionClick = (suggestion: string) => {
     sendChat(suggestion);
-    setShowSuggestions(false);
   };
+
+  useDailyChatReset();
 
   return (
     <>
@@ -93,7 +116,7 @@ export default function Page() {
           </Conversation>
         </div>
 
-        {showSuggestions && (
+        {showSuggestions && messages.length === 0 && (
           <Suggestions className="mt-2">
             {suggestions.map((suggestion) => (
               <Suggestion
@@ -108,21 +131,48 @@ export default function Page() {
         <PromptInput onSubmit={handleSubmit} className="mt-2 relative">
           <PromptInputTextarea onChange={(e) => setInput(e.target.value)} value={input} />
           <PromptInputToolbar>
-            <PromptInputModelSelect onValueChange={(value) => setModel(value)} value={model}>
-              <PromptInputModelSelectTrigger>
-                <PromptInputModelSelectValue />
-              </PromptInputModelSelectTrigger>
-              <PromptInputModelSelectContent>
-                {models.map((m) => (
-                  <PromptInputModelSelectItem key={m.id} value={m.id} disabled={!m.available}>
-                    <div className="flex items-center justify-between w-full">
-                      <span className={!m.available ? "text-muted-foreground" : ""}>{m.name}</span>
-                      {!m.available && <LockIcon className="w-4 h-4 text-muted-foreground ml-2" />}
-                    </div>
-                  </PromptInputModelSelectItem>
-                ))}
-              </PromptInputModelSelectContent>
-            </PromptInputModelSelect>
+            <PromptInputTools>
+              <PromptInputModelSelect onValueChange={(value) => setModel(value)} value={model}>
+                <PromptInputModelSelectTrigger>
+                  <PromptInputModelSelectValue />
+                </PromptInputModelSelectTrigger>
+                <PromptInputModelSelectContent>
+                  {models.map((m) => (
+                    <PromptInputModelSelectItem key={m.id} value={m.id} disabled={!m.available}>
+                      <div className="flex items-center justify-between w-full">
+                        <span className={!m.available ? "text-muted-foreground" : ""}>
+                          {m.name}
+                        </span>
+                        {!m.available && (
+                          <LockIcon className="w-4 h-4 text-muted-foreground ml-2" />
+                        )}
+                      </div>
+                    </PromptInputModelSelectItem>
+                  ))}
+                </PromptInputModelSelectContent>
+              </PromptInputModelSelect>
+
+              <PromptInputButton
+                onClick={() => {
+                  if (listening) {
+                    SpeechRecognition.stopListening();
+                    toast.dismiss("mic-status");
+                    toast.info("Microphone stopped", { id: "mic-status" });
+                    setUseMicrophone(false);
+                  } else {
+                    SpeechRecognition.startListening({ continuous: true });
+                    toast.dismiss("mic-status");
+                    toast.loading("Microphone listening...", { id: "mic-status" });
+                    setUseMicrophone(true);
+                  }
+                }}
+                variant={useMicrophone ? "default" : "ghost"}
+                disabled={isLoading}
+              >
+                <MicIcon size={16} className={listening ? "text-black" : ""} />
+                <span className="sr-only">Microphone</span>
+              </PromptInputButton>
+            </PromptInputTools>
             <PromptInputSubmit
               className="absolute right-1 bottom-1"
               disabled={isLoading}

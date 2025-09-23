@@ -3,9 +3,5 @@ TODO
 1. Make ICON for the system
 2. Setup the Gemini's config or systems intruction 
 3. Remove all the console 
-4. Add the database and supabase types in the .gitignore+   
-5. Transaction filter not working properly    
-6. Add staletime and gctime for the queries
-7. Use zustand to contain the conversation of the day (delete the day after)
-8. Add debounce on min and max amount (transaction)
-9. Update the gemini config
+4. Save the query (chatbot) in local using zustand 
+ 

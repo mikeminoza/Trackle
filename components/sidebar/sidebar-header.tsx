@@ -1,6 +1,4 @@
-"use client";
-
-import { Wallet } from "lucide-react";
+import Image from "next/image";
 
 interface SidebarHeaderProps {
   isCollapsed?: boolean;
@@ -10,10 +8,10 @@ interface SidebarHeaderProps {
 export function SidebarHeader({ isCollapsed, isMobileOpen }: SidebarHeaderProps) {
   return (
     <div className="flex h-16 items-center border-b border-sidebar-border px-4">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         {/* Icon */}
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-primary">
-          <Wallet className="h-4 w-4 text-sidebar-primary-foreground" />
+          <Image src="/images/logo.png" alt="logo" width={32} height={32} />
         </div>
 
         <span

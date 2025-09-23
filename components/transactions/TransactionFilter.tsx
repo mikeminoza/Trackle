@@ -21,9 +21,20 @@ import { SlidersHorizontal } from "lucide-react";
 import CalendarFilter from "./CalendarFilter";
 import CategoryFilter from "./CategoryFilter";
 import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
+import { useDebouncedSearchParam } from "@/hooks/useDebouncedSearchParam";
 
 export default function TransactionFilter() {
   const { setParam, searchParams, resetParams } = useUpdateQueryParams();
+  const minInput = useDebouncedSearchParam({
+    initialValue: searchParams.get("minAmount") || "",
+    setParam: (val) => setParam("minAmount", val),
+    getParam: () => searchParams.get("minAmount"),
+  });
+  const maxInput = useDebouncedSearchParam({
+    initialValue: searchParams.get("maxAmount") || "",
+    setParam: (val) => setParam("maxAmount", val),
+    getParam: () => searchParams.get("maxAmount"),
+  });
 
   return (
     <Sheet>
@@ -81,14 +92,14 @@ export default function TransactionFilter() {
               <Input
                 type="number"
                 placeholder="Min ₱"
-                value={searchParams.get("minAmount") ?? ""}
-                onChange={(e) => setParam("minAmount", e.target.value)}
+                value={minInput.term}
+                onChange={minInput.handleChange}
               />
               <Input
                 type="number"
                 placeholder="Max ₱"
-                value={searchParams.get("maxAmount") ?? ""}
-                onChange={(e) => setParam("maxAmount", e.target.value)}
+                value={maxInput.term}
+                onChange={maxInput.handleChange}
               />
             </div>
           </div>

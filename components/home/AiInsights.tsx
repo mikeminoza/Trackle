@@ -28,7 +28,7 @@ export default function AiInsight({ userId, payload }: AiInsightsProps) {
       payload.budgets);
 
   const {
-    data: insights,
+    data: insights = [],
     isLoading,
     isError,
   } = useAiInsightQuery(userId, payload, {
@@ -41,24 +41,26 @@ export default function AiInsight({ userId, payload }: AiInsightsProps) {
 
   return (
     <div className="space-y-3">
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={toggle}
-        className="flex items-center ml-auto h-6 w-auto px-2 py-1 text-xs gap-1"
-      >
-        {visible ? (
-          <>
-            <EyeOff className="w-3 h-3" />
-            <span>Hide Insights</span>
-          </>
-        ) : (
-          <>
-            <Eye className="w-3 h-3" />
-            <span>Show Insights</span>
-          </>
-        )}
-      </Button>
+      {insights.length > 0 && (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggle}
+          className="flex items-center ml-auto h-6 w-auto px-2 py-1 text-xs gap-1"
+        >
+          {visible ? (
+            <>
+              <EyeOff className="w-3 h-3" />
+              <span>Hide Insights</span>
+            </>
+          ) : (
+            <>
+              <Eye className="w-3 h-3" />
+              <span>Show Insights</span>
+            </>
+          )}
+        </Button>
+      )}
 
       {/* Insights list */}
       {visible && (

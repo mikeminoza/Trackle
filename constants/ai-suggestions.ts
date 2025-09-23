@@ -1,6 +1,8 @@
 export const suggestions = [
-  "Help me set up my monthly budget in Trackle",
-  "Explain how my recurring expenses and carryover affect my balance",
-  "Give me tips to cut down on overspending this month",
-  "Suggest better categories for tracking my expenses",
+  "List my top expenses",
+  "Help me manage my finances",
+  "How can I save more this month?",
+  "What is my total balance right now?",
+  "List all my active budgets",
+  "Give tips to reduce overspending",
 ];
