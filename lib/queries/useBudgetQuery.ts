@@ -7,4 +7,8 @@ export const useBudgetQuery = (userId?: string, filters?: BudgetFilters) =>
     queryKey: ["budgets", userId, filters],
     queryFn: () => getBudgets(userId!, filters),
     enabled: !!userId,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 60,
+    refetchInterval: 1000 * 60 * 10,
+    refetchOnWindowFocus: true,
   });

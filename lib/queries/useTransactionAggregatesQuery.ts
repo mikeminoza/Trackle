@@ -7,4 +7,8 @@ export const useTransactionAggregatesQuery = (userId?: string, year?: number) =>
     queryKey: ["transactionAggregates", userId, year],
     queryFn: () => getTransactionAggregates(userId!, year!),
     enabled: !!userId && !!year,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 60,
+    refetchInterval: 1000 * 60 * 10,
+    refetchOnWindowFocus: true,
   });

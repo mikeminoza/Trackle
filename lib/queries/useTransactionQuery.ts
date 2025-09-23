@@ -13,6 +13,8 @@ export const useTransactionsQuery = (userId?: string, filters?: TransactionFilte
       return lastPage.length === limit ? allPages.length : undefined;
     },
     select: (data) => data.pages.flatMap((page) => page),
-    staleTime: 1000 * 60 * 2,
-    gcTime: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 60,
+    refetchInterval: 1000 * 60 * 10,
+    refetchOnWindowFocus: true,
   });
