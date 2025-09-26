@@ -9,10 +9,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
       {/* Main Content */}
       <Suspense fallback={null}>
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Header should go here if sticky */}
-          {children}
-        </div>
+        <div className="flex-1 flex flex-col overflow-hidden">{children}</div>
       </Suspense>
     </div>
   );

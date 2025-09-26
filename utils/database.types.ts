@@ -78,6 +78,21 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number

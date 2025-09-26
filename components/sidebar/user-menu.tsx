@@ -1,5 +1,5 @@
 "use client";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,13 +50,6 @@ export function UserMenu({ isCollapsed }: UserMenuProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56" side={isCollapsed ? "right" : "top"}>
-        <DropdownMenuItem asChild>
-          <Link href="/profile" className="flex items-center">
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </Link>
-        </DropdownMenuItem>
-
         <DropdownMenuItem asChild>
           <Link href="/settings" className="flex items-center">
             <Settings className="mr-2 h-4 w-4" />
