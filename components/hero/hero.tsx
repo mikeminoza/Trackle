@@ -12,7 +12,7 @@ export default function Hero() {
     <div className="relative overflow-hidden w-full">
       <div className="absolute inset-0 pointer-events-none" />
 
-      <div className="w-full px-4 py-16 lg:py-24">
+      <div className="w-full px-2 py-16 lg:py-24">
         <div className="w-full max-w-7xl mx-auto">
           <HeroBadge />
           <HeroHeading />

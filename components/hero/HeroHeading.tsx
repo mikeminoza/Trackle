@@ -15,7 +15,7 @@ export default function HeroHeading() {
           Financial Future
         </span>
       </h1>
-      <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+      <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed text-center">
         Track expenses, set budgets, and achieve your savings goals with AI-powered insights. No
         bank connections required – your data stays private and secure.
       </p>
