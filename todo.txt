@@ -5,3 +5,6 @@ TODO
 3. Remove all the console 
 4. Save the query (chatbot) in local using zustand 
 5. Add not found component 
+6. Test the delete user
+7. Add Skeleton for settings
+8. Use useContext for the useUser
