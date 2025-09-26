@@ -1,61 +1,60 @@
-# Trackle – Personal Finance & Budgeting Web App
+# Hi, I'm Mike Arthur
 
-**Trackle** is a modern personal finance tracker designed to help you take control of your money.  
-Easily log expenses, set and manage budgets, track savings goals, and gain clear insights into your financial health — all without connecting banks or third-party wallets.
-
----
-
-## Features
-
-### Transaction Management
-
-- Manually add, edit, and delete income and expenses.
-- **Voice Input**
-  - Quickly log transactions using speech.
-    - Example: Say “Spent 250 pesos on food yesterday” and Trackle will automatically create a transaction
-
-### Budgets
-
-- Set monthly budget limits by category.
-- Track spending in real time with visual progress indicators.
-- **Budget Carryover**
-  - Carry over unspent funds or overspending into the next cycle.
-  - Example: If your Food budget is ₱5,000 and you only spend ₱4,000, the remaining ₱1,000 rolls over, making next month’s Food budget ₱6,000.
-  - Overspending reduces the available budget for the next month.
-- **Recurring Budgets**
-  - Automatically renew budgets on a chosen cycle (e.g., monthly, weekly).
-  - Combine with carryover to either reset budgets cleanly or continue with leftover/overspent amounts.
-
-### Reports & Dashboards
-
-- View a summary of total income, expenses, and balance.
-- Analyze category-wise spending for smarter financial decisions.
-
-### AI-Powered Insights
-
-- Personalized spending insights such as:
-  - "You spent 40% more on food this week compared to last week."
-  - "Cutting ₱500 from subscriptions could save you ₱6,000 per year."
-- Predictive forecasting to alert you when you are close to exceeding a budget.
-
-### Chat Assistant
-
-- Ask natural language questions about your finances, for example:
-  - "How much did I spend on transport last week?"
-- Get instant answers powered by your local data and Gemini AI.
-
-### Settings & Personalization
-
-- Update your profile details (e.g., name, theme).
-- Manage reminders and notifications.
-- Reset or clear all data at any time.
+Aspiring Software Developer | Always learning, experimenting, and improving my coding skills
 
 ---
 
-## Tech Stack
+## 🛠 Skills & Tools
 
-- **Frontend**: Next.js
-- **UI Components**: shadcn/ui, TailwindCSS
-- **State Management**: Zustand
-- **AI Integration**: Google Gemini API
-- **Database**: Supabase
+**Languages:**  
+![Java](https://img.shields.io/badge/-Java-F89820?style=flat-square&logo=java&logoColor=white)
+![PHP](https://img.shields.io/badge/-PHP-777BB4?style=flat-square&logo=php&logoColor=white)
+![C](https://img.shields.io/badge/-C-A8B9CC?style=flat-square&logo=c&logoColor=white)
+![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+
+**Databases:**  
+![MySQL](https://img.shields.io/badge/-MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
+
+**Frameworks:**  
+![Tailwind CSS](https://img.shields.io/badge/-Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/-Bootstrap-7952B3?style=flat-square&logo=bootstrap&logoColor=white)
+![Laravel](https://img.shields.io/badge/-Laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white)
+![Next.js](https://img.shields.io/badge/-Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+
+**Tools & Platforms:**  
+![Docker](https://img.shields.io/badge/-Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Supabase](https://img.shields.io/badge/-Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
+![Postman](https://img.shields.io/badge/-Postman-FF6C37?style=flat-square&logo=postman&logoColor=white)
+![Figma](https://img.shields.io/badge/-Figma-F24E1E?style=flat-square&logo=figma&logoColor=white)
+![GitHub](https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github&logoColor=white)
+
+---
+
+## 🌱 Currently Learning
+
+- AI-powered applications (Gemini AI, chatbots)
+- Cloud platform tools (deployment, DevOps basics)
+
+---
+
+## 💻 Projects
+
+- **MedNexus** – School clinic web app handling appointments and medical documents for students and employees.
+- **Chi-Square Calculator** – Statistical hypothesis test calculator.
+- **[SparkQuiz](https://sparkquiz.vercel.app/)** – MCQ generator using Gemini AI.
+- **Travelling Chatbot** – AI chatbot using Gemini to assist with travel questions and plans.
+- **[Trackle](https://trackle-web.vercel.app/)** – Financial app with AI insights and chatbot for tracking money (powered by Gemini, in progress).
+
+---
+
+## 📫 Contact Me
+
+- **Email:** [mikearthurminoza@gmail.com](mailto:mikearthurminoza@gmail.com)
+- **Phone:** +63 991 190 3093
+
+---
+
+> "The best way to predict the future is to invent it." – Alan Kay

@@ -4,4 +4,4 @@ TODO
 2. Setup the Gemini's config or systems intruction 
 3. Remove all the console 
 4. Save the query (chatbot) in local using zustand 
- 
+5. Add not found component 
