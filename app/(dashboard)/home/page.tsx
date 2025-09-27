@@ -1,11 +1,10 @@
 "use client";
-import { ContentHeader } from "@/components/sidebar/content-header";
+import ContentHeader from "@/components/sidebar/content-header";
 import FinancialSummary from "@/components/home/FInancialSummary";
 import SpendingChart from "@/components/home/SpendingChart";
 import IncomeExpenseChart from "@/components/home/IncomeExpenseChart";
 import BudgetProgress from "@/components/home/BudgetProgress";
 import CashFlowTrendChart from "@/components/home/CashFlowTrendChart";
-import { useUser } from "@/hooks/useUser";
 import { useFinancialSummaryQuery } from "@/lib/queries/useFinancialSummaryQuery ";
 import { useTransactionAggregatesQuery } from "@/lib/queries/useTransactionAggregatesQuery";
 import { useSpendingBreakdownQuery } from "@/lib/queries/useSpendingBreakdownQuery";
@@ -16,9 +15,10 @@ import ErrorMessage from "@/components/ErrorMessage";
 import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
 import YearFilter from "@/components/home/YearFilter";
 import AiInsights from "@/components/home/AiInsights";
+import { useUserContext } from "@/context/UserContext";
 
 export default function Page() {
-  const { data: user } = useUser();
+  const { data: user, isLoading: isUserLoading, isError: isUserError } = useUserContext();
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
 
@@ -49,8 +49,13 @@ export default function Page() {
   } = useBudgetQuery(user?.id, { status: "active" });
 
   const isLoading =
-    isSummaryLoading || isAggregatesLoading || isSpendingLoading || isBudgetsLoading;
-  const isError = isSummaryError || isAggregatesError || isSpendingError || isBudgetsError;
+    isUserLoading ||
+    isSummaryLoading ||
+    isAggregatesLoading ||
+    isSpendingLoading ||
+    isBudgetsLoading;
+  const isError =
+    isUserError || isSummaryError || isAggregatesError || isSpendingError || isBudgetsError;
 
   const errorMessage = isSummaryError
     ? "Failed to load financial summary."
@@ -60,7 +65,9 @@ export default function Page() {
         ? "Failed to load spending breakdown."
         : isBudgetsError
           ? "Failed to load budgets."
-          : undefined;
+          : isUserError
+            ? "Something went wrong!"
+            : undefined;
 
   return (
     <>

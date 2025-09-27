@@ -12,7 +12,7 @@ import {
   PromptInputButton,
   PromptInputTools,
 } from "@/components/prompt-input";
-import { ContentHeader } from "@/components/sidebar/content-header";
+import ContentHeader from "@/components/sidebar/content-header";
 import { useEffect, useState } from "react";
 import { models } from "@/constants/ai-models";
 import {

@@ -1,11 +1,10 @@
 "use client";
-import { ContentHeader } from "@/components/sidebar/content-header";
+import ContentHeader from "@/components/sidebar/content-header";
 import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
 import BudgetDialog from "@/components/budgets/BudgetDialog";
 import BudgetSummary from "@/components/budgets/BudgetSummary";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useUser } from "@/hooks/useUser";
 import { useBudgetSummaryQuery } from "@/lib/queries/useBudgetSummaryQuery";
 import { useBudgetQuery } from "@/lib/queries/useBudgetQuery";
 import BudgetList from "@/components/budgets/BudgetList";
@@ -16,6 +15,7 @@ import BudgetFilter from "@/components/budgets/BudgetFilter";
 import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
 import { BudgetFilters } from "@/types/budget";
 import { Plus } from "lucide-react";
+import { useUserContext } from "@/context/UserContext";
 
 function AddBudgetButton({ onClick }: { onClick: () => void }) {
   return (
@@ -53,7 +53,7 @@ export default function BudgetPage() {
   ]);
 
   const [addOpen, setAddOpen] = useState(false);
-  const { data: user } = useUser();
+  const { data: user } = useUserContext();
   const {
     data: budgetSummary,
     isLoading: isSummaryLoading,

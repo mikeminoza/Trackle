@@ -7,7 +7,7 @@ import usePasswordForm from "@/hooks/forms/usePasswordForm";
 import { Form } from "../ui/form";
 import { FormInput } from "../FormInput";
 
-export function PasswordSection() {
+export default function PasswordSection() {
   const { form, onSubmit, isLoading } = usePasswordForm();
 
   return (

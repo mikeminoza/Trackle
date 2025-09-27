@@ -1,6 +1,6 @@
 "use client";
 
-import { ContentHeader } from "@/components/sidebar/content-header";
+import ContentHeader from "@/components/sidebar/content-header";
 import { Loader2, Plus } from "lucide-react";
 import TransactionDialog from "@/components/transactions/TransactionDialog";
 import TransactionFilter from "@/components/transactions/TransactionFilter";
@@ -10,7 +10,6 @@ import TransactionSearch from "@/components/transactions/TransactionSearch";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionQuery";
 import { TransactionList } from "@/components/transactions/TransactionList";
 import ErrorQueryMessage from "@/components/ErrorQueryMessage";
-import { useUser } from "@/hooks/useUser";
 import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
 import NoResults from "@/components/NoResult";
 import { useState } from "react";
@@ -23,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUserContext } from "@/context/UserContext";
 
 export default function Page() {
   const { searchParams, setParam, hasFiltersApplied } = useUpdateQueryParams();
@@ -47,7 +47,7 @@ export default function Page() {
   ]);
 
   const [addOpen, setAddOpen] = useState(false);
-  const { data: user } = useUser();
+  const { data: user } = useUserContext();
   const {
     data: transactions,
     isLoading,

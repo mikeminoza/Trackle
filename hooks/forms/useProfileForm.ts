@@ -16,8 +16,7 @@ export default function useProfileForm(user: SupabaseUser) {
   );
   const [avatarPath, setAvatarPath] = useState<string | null>(
     user.user_metadata.avatar_path ?? null
-  ); // ✅ track the current path locally
-
+  ); 
 
   const form = useForm<ProfileFields>({
     resolver: zodResolver(ProfileSchema),
@@ -86,7 +85,6 @@ export default function useProfileForm(user: SupabaseUser) {
       setIsLoading(false);
     }
   };
-
 
   return {
     form,

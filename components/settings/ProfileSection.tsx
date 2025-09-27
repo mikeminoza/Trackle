@@ -14,16 +14,15 @@ interface ProfileSectionProps {
   user: SupabaseUser;
 }
 
-export function ProfileSection({ user }: ProfileSectionProps) {
+export default function ProfileSection({ user }: ProfileSectionProps) {
   const { form, onSubmit, isLoading, previewUrl, setPreviewUrl } = useProfileForm(user);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  console.log(`URL: ${previewUrl}`);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setPreviewUrl(URL.createObjectURL(file));
-      form.setValue("avatar", file, { shouldDirty: true });
+      form.setValue("avatar", file, { shouldDirty: true, shouldValidate: true });
     }
   };
 
@@ -59,11 +58,7 @@ export function ProfileSection({ user }: ProfileSectionProps) {
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  {...form.register("avatar")}
-                  ref={(e) => {
-                    form.register("avatar").ref(e);
-                    fileInputRef.current = e;
-                  }}
+                  ref={fileInputRef}
                   onChange={handleFileChange}
                 />
               </div>
