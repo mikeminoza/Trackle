@@ -1,14 +1,16 @@
 "use client";
 
-import { ContentHeader } from "@/components/sidebar/content-header";
-import { ProfileSection } from "@/components/settings/ProfileSection";
-import { PasswordSection } from "@/components/settings/PasswordSection";
-import { AccountControls } from "@/components/settings/AccountControls";
+import ContentHeader from "@/components/sidebar/content-header";
+import ProfileSection from "@/components/settings/ProfileSection";
+import PasswordSection from "@/components/settings/PasswordSection";
+import AccountControls from "@/components/settings/AccountControls";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/hooks/useUser";
+import { useUserContext } from "@/context/UserContext";
+import SettingsSkeleton from "@/components/skeletons/SettingsSkeleton";
+import ErrorMessage from "@/components/ErrorMessage";
 
 export default function Page() {
-  const { data: user } = useUser();
+  const { data: user, isLoading, isError, error } = useUserContext();
 
   return (
     <>
@@ -18,9 +20,17 @@ export default function Page() {
           Manage your profile, security, and account controls
         </p>
 
-        {user && <ProfileSection user={user} />}
-        {user && <PasswordSection />}
-        {user && <AccountControls user={user} />}
+        {isLoading && <SettingsSkeleton />}
+
+        {isError && <ErrorMessage message={error?.message ?? "Failed to load user data"} />}
+
+        {!isLoading && !isError && user && (
+          <>
+            <ProfileSection user={user} />
+            <PasswordSection />
+            <AccountControls user={user} />
+          </>
+        )}
 
         <div className="text-center text-sm text-muted-foreground mt-5 mb-3">
           Need help?{" "}

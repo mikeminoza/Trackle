@@ -20,7 +20,7 @@ import { User as SupabaseUser } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
-export function AccountControls({ user }: { user: SupabaseUser }) {
+export default function AccountControls({ user }: { user: SupabaseUser }) {
   const supabase = createClient();
   const [confirmation, setConfirmation] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);

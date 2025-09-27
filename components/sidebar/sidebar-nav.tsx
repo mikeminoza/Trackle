@@ -2,9 +2,9 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { CreditCard, Home, MessageCircle, Wallet } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const sidebarNavItems = [
   {
@@ -50,7 +50,7 @@ export function SidebarNav({ isCollapsed, isMobileOpen }: SidebarNavProps) {
         const Icon = item.icon;
         const isActive = pathname === item.href;
 
-        return (
+        const button = (
           <Button
             key={item.href}
             variant="ghost"
@@ -67,6 +67,17 @@ export function SidebarNav({ isCollapsed, isMobileOpen }: SidebarNavProps) {
               {(!isCollapsed || isMobileOpen) && item.title}
             </Link>
           </Button>
+        );
+
+        return isCollapsed ? (
+          <Tooltip key={item.href}>
+            <TooltipTrigger asChild>{button}</TooltipTrigger>
+            <TooltipContent side="right" className="text-sm">
+              {item.title}
+            </TooltipContent>
+          </Tooltip>
+        ) : (
+          button
         );
       })}
     </div>

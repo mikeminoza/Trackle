@@ -77,7 +77,7 @@ export function AppSidebar({ className }: AppSidebarProps) {
           <SidebarQuickActions isCollapsed={isCollapsed} isMobileOpen={isMobileOpen} />
         </ScrollArea>
 
-        <SidebarFooter isCollapsed={isCollapsed} />
+        <SidebarFooter isCollapsed={isCollapsed} isMobileOpen={isMobileOpen} />
       </div>
     </>
   );

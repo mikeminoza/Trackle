@@ -1,5 +1,5 @@
 "use client";
-import { LogOut, Settings } from "lucide-react";
+import { LogOut, Settings, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,19 +12,35 @@ import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
+import { useUserContext } from "@/context/UserContext";
+import { capitalizeWords } from "@/lib/utils/capitalizeWords";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface UserMenuProps {
   isCollapsed?: boolean;
+  isMobileOpen?: boolean;
 }
 
-export function UserMenu({ isCollapsed }: UserMenuProps) {
+export function UserMenu({ isCollapsed, isMobileOpen }: UserMenuProps) {
+  const { data: user, isLoading } = useUserContext();
   const router = useRouter();
   const supabase = createClient();
+  const queryClient = useQueryClient();
 
   const logout = async () => {
     await supabase.auth.signOut();
+    queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     router.push("/auth/login");
   };
+
+  if (isLoading) {
+    return null;
+  }
+
+  const fullName = user?.user_metadata?.full_name ?? "Anonymous";
+  const email = user?.email ?? "";
+  const avatarUrl = user?.user_metadata?.avatar_url ?? null;
 
   return (
     <DropdownMenu>
@@ -36,14 +52,30 @@ export function UserMenu({ isCollapsed }: UserMenuProps) {
             isCollapsed && "justify-center px-2"
           )}
         >
-          <div className={cn("flex items-center gap-3", isCollapsed && "justify-center")}>
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sidebar-primary">
-              <span className="text-xs font-medium text-sidebar-primary-foreground">JD</span>
-            </div>
-            {!isCollapsed && (
-              <div className="flex flex-col text-left">
-                <span className="text-sm font-medium text-sidebar-foreground">John Doe</span>
-                <span className="text-xs text-sidebar-foreground/60">Free Plan</span>
+          <div
+            className={cn(
+              "flex items-center gap-3 w-full min-w-0",
+              isCollapsed && "justify-center"
+            )}
+          >
+            <Avatar className="h-10 w-10 flex-shrink-0">
+              <AvatarImage src={avatarUrl || "/images/logo.png"} />
+              <AvatarFallback className="flex items-center justify-center bg-muted text-muted-foreground border">
+                <User className="h-10 w-10" />
+              </AvatarFallback>
+            </Avatar>
+
+            {(!isCollapsed || isMobileOpen) && (
+              <div className="flex flex-col text-left flex-1 min-w-0">
+                <span
+                  className="text-sm font-medium text-sidebar-foreground truncate"
+                  title={fullName}
+                >
+                  {capitalizeWords(fullName)}
+                </span>
+                <span className="text-xs text-sidebar-foreground/60 truncate" title={email}>
+                  {email}
+                </span>
               </div>
             )}
           </div>
