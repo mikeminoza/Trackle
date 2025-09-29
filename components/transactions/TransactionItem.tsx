@@ -18,7 +18,7 @@ export function TransactionItem({ transaction }: Props) {
 
   return (
     <>
-      <li className="group flex items-center justify-between p-4 hover:bg-accent/50 transition rounded-lg">
+      <li className="group flex items-center justify-between p-4 hover:bg-accent/50 transition">
         <div>
           <p className="font-medium">{transaction.title}</p>
           <p className="text-sm text-muted-foreground">{getCategoryLabel(transaction.category)}</p>

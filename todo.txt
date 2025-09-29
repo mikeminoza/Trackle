@@ -1,10 +1,6 @@
 TODO
- 
-1. Make ICON for the system
-2. Setup the Gemini's config or systems intruction 
-3. Remove all the console 
-4. Save the query (chatbot) in local using zustand 
-5. Add not found component 
-6. Test the delete user
-7. Trackle text in sidebar header still showing
-8. Add not found page
+  
+1. Remove all the console 
+2. Save the query (chatbot) in local using zustand  
+3. Test the delete user  
+4. Update categories

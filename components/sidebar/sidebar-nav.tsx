@@ -8,7 +8,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 
 const sidebarNavItems = [
   {
-    title: "Dashboard",
+    title: "Home",
     href: "/home",
     icon: Home,
   },

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { ChatMessage } from "@/types/ai";
-import { models } from "@/constants/ai-models";
-import { geminiConfig } from "@/lib/gemini/config";
+import { models } from "@/constants/ai-models"; 
 import { GoogleGenAI } from "@google/genai";
 import {
   getFinancialSummary,
@@ -11,6 +10,8 @@ import {
 import { getBudgets, getBudgetSummary } from "@/services/budget";
 import { getTransactions } from "@/services/transaction";
 import { supabaseAdmin } from "@/lib/supabase/adminClient";
+import { chatConfig } from "@/lib/gemini/chatConfig";
+import { querySelectorConfig } from "@/lib/gemini/querySelectorConfig";
 
 export async function POST(req: Request) {
   try {
@@ -34,9 +35,9 @@ export async function POST(req: Request) {
     const querySelector = await geminiAI.models.generateContent({
       model: model,
       config: {
-        systemInstruction: geminiConfig.querySelector.systemInstruction,
-        responseMimeType: geminiConfig.querySelector.responseMimeType,
-        responseJsonSchema: geminiConfig.querySelector.responseSchema,
+        systemInstruction: querySelectorConfig.systemInstruction,
+        responseMimeType: querySelectorConfig.responseMimeType,
+        responseJsonSchema: querySelectorConfig.responseSchema,
       },
       contents: lastMessage.content,
     });
@@ -88,7 +89,7 @@ export async function POST(req: Request) {
       history: historyMessages,
       config: {
         systemInstruction: `
-          ${geminiConfig.chat.systemInstruction}
+          ${chatConfig.systemInstruction}
           User data (for context, do not repeat unless relevant):
           ${systemData}
         `,
