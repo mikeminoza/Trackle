@@ -12,7 +12,7 @@ export const ProfileSchema = z.object({
     .optional()
     .refine(
       (file) => !file || file.size <= 5 * 1024 * 1024,
-      "Max file size is 2MB"
+      "Max file size is 5MB"
     )
     .refine(
       (file) =>

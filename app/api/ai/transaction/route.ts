@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server"; 
 import { models } from "@/constants/ai-models";
 import { GoogleGenAI } from "@google/genai";
-import { insightsConfig } from "@/lib/gemini/insightsConfig";
+import { voiceTransactionConfig } from "@/lib/gemini/voiceTransactionConfig";
 
 export async function POST(req: Request) {
   try {
-    const { payload } = await req.json();
+    const { input } = await req.json();
 
     const model = models[0].id;
     const geminiAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
@@ -13,21 +13,20 @@ export async function POST(req: Request) {
     const response = await geminiAI.models.generateContent({
       model: model,
       config: {
-        systemInstruction: insightsConfig.systemInstruction,
-        responseMimeType: insightsConfig.responseMimeType,
-        responseSchema: insightsConfig.responseSchema,
+        systemInstruction: voiceTransactionConfig.systemInstruction,
+        responseMimeType: voiceTransactionConfig.responseMimeType,
+        responseSchema: voiceTransactionConfig.responseSchema,
       },
-      contents: JSON.stringify(payload),
+      contents: input,
     });
 
     if (!response.text) {
-      return NextResponse.json({ error: "Failed to generate insights" }, { status: 400 });
+      return NextResponse.json({ error: "Failed to generate transaction input(s)" }, { status: 400 });
     }
 
-    const aiResponse = JSON.parse(response.text);
-    const insights = Array.isArray(aiResponse.insights) ? aiResponse.insights : [];
+    const transactions = JSON.parse(response.text);
 
-    return NextResponse.json({ insights });
+    return NextResponse.json(transactions);
   } catch (error: unknown) {
     console.error("Error generating insights:", error);
     return NextResponse.json({ error: "Failed to generate insights" }, { status: 400 });

@@ -64,7 +64,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium">Profile Picture</p>
-                <p className="text-xs text-muted-foreground">JPG, GIF or PNG. Max size of 2MB.</p>
+                <p className="text-xs text-muted-foreground">JPG, GIF or PNG. Max size of 5MB.</p>
               </div>
             </div>
 

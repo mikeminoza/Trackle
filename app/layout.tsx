@@ -12,9 +12,12 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Trackle",
+  title: {
+    default: "Trackle",
+    template: "Trackle | %s",
+  },
   description:
-    "Trackle is a modern personal finance and budgeting app that helps you manage transactions, set budgets, and gain AI-powered spending insights for smarter money decisions.",
+    "Trackle is a modern personal finance and budgeting app that helps you manage transactions, set budgets, and gain AI-powered spending insights.",
 };
 
 const geistSans = Geist({
