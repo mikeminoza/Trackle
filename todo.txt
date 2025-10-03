@@ -4,4 +4,5 @@ TODO
 2. Save the query (chatbot) in local using zustand  
 3. Test the delete user  
 4. Update categories
-5. In the budget, fetch the budget for this month only
+5. In the budget, fetch the budget for this month only 
+6. Pass the user id in the context in useSendMessage 

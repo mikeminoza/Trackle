@@ -9,15 +9,18 @@ import { SupabaseClient } from "@supabase/supabase-js";
 const supabase = createClient();
 
 // Insert a new transaction
-export const createTransactionService = async (newTransaction: TransactionInsert) => {
+export const createTransactionService = async (newTransaction: TransactionInsert | TransactionInsert[]) => {
+  const payload = Array.isArray(newTransaction)
+    ? newTransaction
+    : [newTransaction];
+
   const { data, error } = await supabase
     .from("transactions")
-    .insert(newTransaction)
-    .select()
-    .single();
+    .insert(payload)
+    .select();
 
   if (error) throw error;
-  return data as Transaction;
+  return data as Transaction[];
 };
 
 // Update an existing transaction

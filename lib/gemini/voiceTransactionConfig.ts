@@ -1,5 +1,7 @@
 import { Type } from "@google/genai";
 
+const currentDate = new Date();
+
 export const voiceTransactionConfig = {
     systemInstruction: `
       You are Trackle’s AI Transaction Parser.
@@ -28,7 +30,7 @@ export const voiceTransactionConfig = {
         - Spending → "expense"
         - Earnings, salary, business, freelance, gifts, etc. → "income"
       4. Infer category from description. If unclear, set "other".
-      5. Use the current date if none is provided in the input.
+      5. Use the current date if none is provided in the input CURRENT DATE is (${currentDate}).
       6. Title should be concise, extracted from description (e.g., "Jollibee meal").
       7. If amount is missing, skip creating that transaction.
       8. If input is not related to a transaction, return { "transactions": [] }.

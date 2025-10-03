@@ -1,22 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Download, PlusCircle, WalletMinimal } from "lucide-react";
+import { Download, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TransactionVoiceDialog from "../transactions/TransactionVoiceDialog";
 
 const quickActions = [
   {
     title: "Add Transaction",
-    icon: PlusCircle,
+    icon: Mic,
     onClick: (setDialogOpen: (open: boolean) => void) => setDialogOpen(true),
-  },
-  {
-    title: "Add Budget",
-    icon: WalletMinimal,
-    onClick: () => {
-      console.log("Open add budget dialog");
-    },
   },
   {
     title: "Export Data",
@@ -62,11 +55,7 @@ export function SidebarQuickActions({ isCollapsed, isMobileOpen }: SidebarQuickA
       })}
 
       {/* Voice transaction dialog */}
-      <TransactionVoiceDialog
-        open={voiceDialogOpen}
-        onOpenChange={setVoiceDialogOpen}
-        onSubmit={() => {}}
-      />
+      <TransactionVoiceDialog open={voiceDialogOpen} onOpenChange={setVoiceDialogOpen} />
     </div>
   );
 }

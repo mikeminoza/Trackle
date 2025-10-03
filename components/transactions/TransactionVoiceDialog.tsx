@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Drawer,
   DrawerContent,
@@ -13,21 +13,63 @@ import { Button } from "@/components/ui/button";
 import { Mic, Loader2, RefreshCw } from "lucide-react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import { cn } from "@/lib/utils";
+import { useVoiceTransactions } from "@/hooks/gemini/useVoiceTransactions";
+import { useTransaction } from "@/lib/mutations/transaction";
+import { toast } from "sonner";
+import { useUserContext } from "@/context/UserContext";
+import { TransactionInsert } from "@/types/db";
 
 interface TransactionVoiceDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (transcript: string) => void;
 }
 
 export default function TransactionVoiceDrawer({
   open,
   onOpenChange,
-  onSubmit,
 }: TransactionVoiceDrawerProps) {
+  const { data: user } = useUserContext();
+  const generateTransactions = useVoiceTransactions();
+  const { createTransaction } = useTransaction();
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const handleStart = () => {
+    SpeechRecognition.startListening({ continuous: true });
+  };
+
+  const handleStop = () => {
+    SpeechRecognition.stopListening();
+  };
+
+  const handleConfirm = async () => {
+    setIsSubmitting(true);
+    SpeechRecognition.stopListening();
+
+    const result = await generateTransactions(transcript);
+    const transactions: TransactionInsert[] = result.transactions.map((t) => ({
+      ...t,
+      user_id: user!.id,
+    }));
+    if (transactions.length === 0) {
+      toast.info("No transactions generated");
+    }
+
+    await createTransaction.mutateAsync(transactions);
+
+    setIsSubmitting(false);
+    onOpenChange(false);
+    resetTranscript();
+  };
+
+  // reset transactipt if the drawer is closed
+  useEffect(() => {
+    if (!open) {
+      resetTranscript();
+    }
+  }, [open, resetTranscript]);
+
+  // microphone not supported
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
@@ -40,27 +82,17 @@ export default function TransactionVoiceDrawer({
     );
   }
 
-  const handleStart = () => {
-    resetTranscript();
-    SpeechRecognition.startListening({ continuous: true });
-  };
-
-  const handleStop = () => {
-    SpeechRecognition.stopListening();
-  };
-
-  const handleConfirm = () => {
-    setIsSubmitting(true);
-    onSubmit(transcript);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      onOpenChange(false);
-      resetTranscript();
-    }, 500);
-  };
-
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer
+      open={open}
+      onOpenChange={(o) => {
+        if (!o) {
+          SpeechRecognition.stopListening();
+          resetTranscript();
+        }
+        onOpenChange(o);
+      }}
+    >
       <DrawerContent className="rounded-t-2xl shadow-xl flex flex-col gap-4 px-6 md:px-80 py-6">
         <DrawerHeader>
           <DrawerTitle className="flex items-center gap-2 text-lg font-semibold">
@@ -73,9 +105,10 @@ export default function TransactionVoiceDrawer({
         </DrawerHeader>
 
         <div className="min-h-[100px] border border-dashed rounded-lg p-3 mx-4 flex flex-col gap-2 text-center overflow-y-auto break-words">
-          <span className="flex-1">
+          <span className="flex-1 font-thin">
             {transcript || "Your spoken transaction will appear here..."}
           </span>
+
           {transcript && (
             <Button
               variant="outline"
@@ -89,11 +122,20 @@ export default function TransactionVoiceDrawer({
         </div>
         <DrawerFooter className="flex justify-between gap-2 mt-2">
           {!listening ? (
-            <Button onClick={handleStart} className="flex items-center gap-2">
-              <Mic className="w-4 h-4" /> Start
+            <Button
+              onClick={handleStart}
+              disabled={isSubmitting}
+              className="flex items-center gap-2"
+            >
+              <Mic className="w-4 h-4" /> {transcript ? "Resume" : "Start"}
             </Button>
           ) : (
-            <Button onClick={handleStop} className="flex items-center gap-2">
+            <Button
+              onClick={handleStop}
+              disabled={isSubmitting}
+              className="flex items-center gap-2"
+              variant={"destructive"}
+            >
               <Loader2 className="w-4 h-4 animate-spin" /> Stop
             </Button>
           )}
