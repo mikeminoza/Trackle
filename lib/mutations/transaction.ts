@@ -19,7 +19,10 @@ export function useTransaction() {
   // Create
   const createTransaction = useMutation({ 
     mutationFn: createTransactionService, 
-    onSuccess: (data) => handleSuccess(data.user_id, "Transaction added successfully."),
+    onSuccess: (data) => {
+      const transaction = data[0];
+      handleSuccess(transaction.user_id, "Transaction added successfully.")
+    },
     onError: (error) => handleError(error, "creating transaction"),
   });
 

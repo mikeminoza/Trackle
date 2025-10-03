@@ -1,3 +1,4 @@
+"use client";
 import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
