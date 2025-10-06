@@ -26,7 +26,7 @@ Easily manage all your income and expense records.
 - **Add, Edit, Delete Transactions**: Keep your records accurate and up-to-date.
 - **Multiple Input Modes**:
   - Manual entry for precise control
-  - **Speak to Save** — add transactions hands-free with voice input
+  - **Speak to Save** — add transactions with voice input
 - **Smart Filters**: Quickly search and organize transactions by date, category, or type.
 
 ### 3. Budget
