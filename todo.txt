@@ -2,4 +2,4 @@ TODO
   
 1. Remove all the console 
 2. Save the query (chatbot) in local using zustand   
-3. Update categories  
+3. Update categories 
