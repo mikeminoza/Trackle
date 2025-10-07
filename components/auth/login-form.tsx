@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Eye, EyeOff, Mail, Lock, AlertCircle } from "lucide-react";
+import { Field, FieldSeparator } from "@/components/ui/field";
+import { GoogleLoginButton } from "./GoogleLoginButton";
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
   const [email, setEmail] = useState("");
@@ -18,10 +20,10 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
     setIsLoading(true);
     setError(null);
 
@@ -134,15 +136,12 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
             </Button>
           </form>
 
-          {/* Divider */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">New to our platform?</span>
-            </div>
-          </div>
+          <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+            Or continue with
+          </FieldSeparator>
+          <Field>
+            <GoogleLoginButton label={"Login with Google"} />
+          </Field>
 
           {/* Sign Up Link */}
           <div className="text-center">

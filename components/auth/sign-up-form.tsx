@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Eye, EyeOff, Mail, Lock, AlertCircle, UserPlus } from "lucide-react";
+import { FieldSeparator, Field } from "@/components/ui/field";
+import { GoogleLoginButton } from "./GoogleLoginButton";
 
 export function SignUpForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
   const [email, setEmail] = useState("");
@@ -164,17 +166,12 @@ export function SignUpForm({ className, ...props }: React.ComponentPropsWithoutR
             </Button>
           </form>
 
-          {/* Divider */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Already have an account?
-              </span>
-            </div>
-          </div>
+          <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+            Or continue with
+          </FieldSeparator>
+          <Field>
+            <GoogleLoginButton label={"Sign up with Google"} />
+          </Field>
 
           {/* Login Link */}
           <div className="text-center">
