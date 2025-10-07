@@ -15,13 +15,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { Input } from "../ui/input";
-import { createClient } from "@/lib/supabase/client";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function AccountControls({ user }: { user: SupabaseUser }) {
-  const supabase = createClient();
+  const router = useRouter();
   const [confirmation, setConfirmation] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -29,13 +30,13 @@ export default function AccountControls({ user }: { user: SupabaseUser }) {
     try {
       setIsDeleting(true);
 
-      const { error } = await supabase.auth.admin.deleteUser(user.id);
+      const { data } = await axios.post("/api/auth/delete-user", {
+        userId: user.id,
+      });
 
-      if (error) {
-        toast.error(`Failed to delete account: ${error.message}`);
-      } else {
+      if (!data.error) {
         toast.success("Your account has been deleted.");
-        window.location.href = "/";
+        router.push("/");
       }
     } catch {
       toast.error("Something went wrong. Please try again.");

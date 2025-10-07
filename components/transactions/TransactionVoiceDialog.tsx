@@ -46,20 +46,26 @@ export default function TransactionVoiceDrawer({
     setIsSubmitting(true);
     SpeechRecognition.stopListening();
 
+    // generate transaction
     const result = await generateTransactions(transcript);
     const transactions: TransactionInsert[] = result.transactions.map((t) => ({
       ...t,
       user_id: user!.id,
     }));
-    if (transactions.length === 0) {
-      toast.info("No transactions generated");
+
+    // check and create transaction
+    try {
+      if (!transactions || transactions.length === 0) {
+        toast.info("No transactions generated");
+        return;
+      }
+
+      await createTransaction.mutateAsync(transactions);
+      onOpenChange(false);
+      resetTranscript();
+    } finally {
+      setIsSubmitting(false);
     }
-
-    await createTransaction.mutateAsync(transactions);
-
-    setIsSubmitting(false);
-    onOpenChange(false);
-    resetTranscript();
   };
 
   // reset transactipt if the drawer is closed
@@ -93,7 +99,7 @@ export default function TransactionVoiceDrawer({
         onOpenChange(o);
       }}
     >
-      <DrawerContent className="rounded-t-2xl shadow-xl flex flex-col gap-4 px-6 md:px-80 py-6">
+      <DrawerContent className="rounded-t-2xl shadow-xl flex flex-col gap-4 md:px-80 py-6">
         <DrawerHeader>
           <DrawerTitle className="flex items-center gap-2 text-lg font-semibold">
             <Mic

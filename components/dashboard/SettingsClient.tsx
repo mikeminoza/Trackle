@@ -27,7 +27,7 @@ export default function SettingsClient() {
         {!isLoading && !isError && user && (
           <>
             <ProfileSection user={user} />
-            <PasswordSection />
+            {user.app_metadata.provider === "email" && <PasswordSection />}
             <AccountControls user={user} />
           </>
         )}

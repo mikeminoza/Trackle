@@ -32,8 +32,10 @@ import { useChatStore } from "@/store/useChatStore";
 import { useDailyChatReset } from "@/hooks/gemini/useDailyChatReset";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import { toast } from "sonner";
+import { useUserContext } from "@/context/UserContext";
 
 export default function AIAssistantClient() {
+  const { data: user } = useUserContext();
   const { messages, addMessage } = useChatStore();
   const [model, setModel] = useState<string>(models[0].id);
   const [input, setInput] = useState("");
@@ -55,7 +57,7 @@ export default function AIAssistantClient() {
     }
   }, [transcript]);
 
-  const sendMessage = useSendMessage();
+  const sendMessage = useSendMessage(user?.id);
 
   const sendChat = async (input: string) => {
     if (!input.trim()) return;

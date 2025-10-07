@@ -1,15 +1,11 @@
-import { useUser } from "@/hooks/useUser";
-import { ChatMessage } from "@/types/ai";
+ import { ChatMessage } from "@/types/ai";
 import axios, { AxiosError } from "axios";
 
-export function useSendMessage() {
-  const { data: user } = useUser();
+export function useSendMessage(userId?: string) { 
 
-  const sendMessage = async (messages: ChatMessage[], model: string) => {
-    if (!user) throw new Error("User not logged in");
-
+  const sendMessage = async (messages: ChatMessage[], model: string) => { 
     try {
-      const res = await axios.post("/api/ai/chat", { messages, model, userId: user.id });
+      const res = await axios.post("/api/ai/chat", { messages, model, userId });
       return res.data.reply as string;
     } catch (err) {
       if (err instanceof AxiosError) {
