@@ -16,15 +16,19 @@ import { useUpdateQueryParams } from "@/hooks/useUpdateQueryParams";
 import YearFilter from "@/components/home/YearFilter";
 import AiInsights from "@/components/home/AiInsights";
 import { useUserContext } from "@/context/UserContext";
+import EmptyState from "./EmptyState";
+import { BarChart3, PiggyBank, Target, Wallet } from "lucide-react";
 
 export default function HomeClient() {
   const { data: user, isLoading: isUserLoading, isError: isUserError } = useUserContext();
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
 
-  const { searchParams } = useUpdateQueryParams();
+  const { searchParams, hasFiltersApplied } = useUpdateQueryParams();
   const selectedYear = Number(searchParams.get("year")) || currentYear;
   const selectedMonth = Number(searchParams.get("month")) || currentMonth;
+
+  const filtersApplied = hasFiltersApplied(["year", "month"]);
 
   const { data: availableYears = [] } = useAvailableYearQuery(user?.id);
   const {
@@ -93,17 +97,51 @@ export default function HomeClient() {
               }}
             />
             {/* year filter  */}
-            <YearFilter availableYears={availableYears} selectedYear={selectedYear} />
+            {availableYears.length > 0 && (
+              <YearFilter availableYears={availableYears} selectedYear={selectedYear} />
+            )}
             {/* charts  */}
-            <IncomeExpenseChart data={aggregates || []} selectedYear={selectedYear} />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              <CashFlowTrendChart data={aggregates || []} selectedYear={selectedYear} />
-              <SpendingChart
-                data={spendingBreakdown || []}
-                selectedMonth={selectedMonth}
-                selectedYear={selectedYear}
+            {aggregates?.length || filtersApplied ? (
+              <IncomeExpenseChart data={aggregates ?? []} selectedYear={selectedYear} />
+            ) : (
+              <EmptyState
+                title="No Transactions Yet"
+                description="Start adding your income and expenses to visualize your cash flow."
+                icon={<Wallet className="h-8 w-8 text-muted-foreground" />}
               />
-              <BudgetProgress budgets={budgets} />
+            )}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {aggregates?.length || filtersApplied ? (
+                <CashFlowTrendChart data={aggregates ?? []} selectedYear={selectedYear} />
+              ) : (
+                <EmptyState
+                  title="No Cash Flow Data"
+                  description="Track your transactions to see your cash flow trend."
+                  icon={<BarChart3 className="h-8 w-8 text-muted-foreground" />}
+                />
+              )}
+              {spendingBreakdown?.length || filtersApplied ? (
+                <SpendingChart
+                  data={spendingBreakdown ?? []}
+                  selectedMonth={selectedMonth}
+                  selectedYear={selectedYear}
+                />
+              ) : (
+                <EmptyState
+                  title="No Spending Data"
+                  description="Track your expenses to see a breakdown of your spending."
+                  icon={<PiggyBank className="h-8 w-8 text-muted-foreground" />}
+                />
+              )}
+              {budgets?.length || filtersApplied ? (
+                <BudgetProgress budgets={budgets ?? []} />
+              ) : (
+                <EmptyState
+                  title="No Budgets Yet"
+                  description="Set budgets to start tracking your spending goals."
+                  icon={<Target className="h-8 w-8 text-muted-foreground" />}
+                />
+              )}
             </div>
           </>
         )}

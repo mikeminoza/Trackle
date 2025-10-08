@@ -1,24 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Download, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TransactionVoiceDialog from "../transactions/TransactionVoiceDialog";
-
-const quickActions = [
-  {
-    title: "Add Transaction",
-    icon: Mic,
-    onClick: (setDialogOpen: (open: boolean) => void) => setDialogOpen(true),
-  },
-  {
-    title: "Export Data",
-    icon: Download,
-    onClick: () => {
-      console.log("Exporting data");
-    },
-  },
-];
+import { useExportTransactions } from "@/hooks/useExportTransactions";
+import { useUserContext } from "@/context/UserContext";
+import { toast } from "sonner";
 
 interface SidebarQuickActionsProps {
   isCollapsed?: boolean;
@@ -27,6 +15,42 @@ interface SidebarQuickActionsProps {
 
 export function SidebarQuickActions({ isCollapsed, isMobileOpen }: SidebarQuickActionsProps) {
   const [voiceDialogOpen, setVoiceDialogOpen] = useState(false);
+  const { data: user } = useUserContext();
+  const { exportTransactions, isExporting, error } = useExportTransactions();
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  const handleExport = async () => {
+    if (!user?.id) {
+      toast.error("User not found. Please sign in first.");
+      return;
+    }
+
+    const result = await exportTransactions(user.id, "xlsx");
+
+    if (result?.empty) {
+      toast.warning("No transactions found to export.");
+    } else if (result?.success) {
+      toast.success("Transactions exported successfully!");
+    }
+  };
+
+  const quickActions = [
+    {
+      title: "Add Transaction",
+      icon: Mic,
+      onClick: () => setVoiceDialogOpen(true),
+    },
+    {
+      title: isExporting ? "Exporting..." : "Export Data",
+      icon: Download,
+      onClick: handleExport,
+    },
+  ];
 
   return (
     <div className="space-y-1">
@@ -45,7 +69,8 @@ export function SidebarQuickActions({ isCollapsed, isMobileOpen }: SidebarQuickA
             <Button
               variant="ghost"
               className="w-full justify-start gap-3 px-3 py-2 h-10 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-              onClick={() => action.onClick(setVoiceDialogOpen)}
+              onClick={action.onClick}
+              disabled={isExporting}
             >
               <Icon className="h-4 w-4" />
               {(!isCollapsed || isMobileOpen) && action.title}
@@ -54,7 +79,6 @@ export function SidebarQuickActions({ isCollapsed, isMobileOpen }: SidebarQuickA
         );
       })}
 
-      {/* Voice transaction dialog */}
       <TransactionVoiceDialog open={voiceDialogOpen} onOpenChange={setVoiceDialogOpen} />
     </div>
   );
