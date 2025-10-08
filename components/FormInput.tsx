@@ -17,6 +17,7 @@ interface FormInputProps<T extends FieldValues> {
   type?: string;
   className?: string;
   variant?: "input" | "textarea" | "switch" | "password";
+  disabled?: boolean;
 }
 
 export const FormInput = <T extends FieldValues>({
@@ -27,6 +28,7 @@ export const FormInput = <T extends FieldValues>({
   type = "text",
   className = "text-xs lg:text-sm",
   variant = "input",
+  disabled = false,
 }: FormInputProps<T>) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -80,6 +82,7 @@ export const FormInput = <T extends FieldValues>({
                   }
                 }}
                 value={field.value}
+                disabled={disabled}
               />
             )}
           </FormControl>

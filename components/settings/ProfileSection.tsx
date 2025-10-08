@@ -78,8 +78,9 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
               <FormInput
                 control={form.control}
                 name="email"
-                label="email"
+                label="Email"
                 placeholder="Enter mail"
+                disabled={!!user.app_metadata?.provider}
               />
             </div>
 

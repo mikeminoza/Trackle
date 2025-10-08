@@ -13,9 +13,12 @@ export default function HeroCTA() {
       transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
     >
       <Link href="/auth/login">
-        <Button size="lg" className="text-lg px-6 py-4 h-auto">
+        <Button
+          size="lg"
+          className="text-base md:text-lg px-4 md:px-6 py-3 md:py-4 h-auto flex items-center"
+        >
           Start Trackle
-          <ArrowRight className="w-5 h-5 ml-2" />
+          <ArrowRight className="w-4 md:w-5 h-4 md:h-5 ml-2" />
         </Button>
       </Link>
     </motion.div>

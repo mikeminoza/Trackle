@@ -30,6 +30,13 @@ export default function useProfileForm(user: SupabaseUser) {
   const onSubmit: SubmitHandler<ProfileFields> = async (values) => {
     setIsLoading(true);
 
+    const oauthProvider = "google";  
+    if (user.app_metadata?.provider === oauthProvider && values.email !== user.email) {
+      toast.error(`You cannot change your email because you signed up via ${oauthProvider}.`);
+      setIsLoading(false);
+      return;  
+    }
+
     try {
       let avatar_url: string | undefined = undefined;
       let newFilePath: string | undefined = undefined;
@@ -60,9 +67,9 @@ export default function useProfileForm(user: SupabaseUser) {
           await supabase.storage.from("avatars").remove([avatarPath]);
         }
       }
- 
+  
       const { error: updateUserError } = await supabase.auth.updateUser({
-        email: values.email,
+        email: user.app_metadata?.provider ? user.email : values.email,
         data: {
           full_name: values.full_name ?? undefined,
           avatar_url: avatar_url ?? user.user_metadata.avatar_url,
