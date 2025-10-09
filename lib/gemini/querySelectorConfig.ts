@@ -1,4 +1,5 @@
-import { Type } from "@google/genai";
+import { Type } from "@google/genai"; 
+import { expenseCategoryString, incomeCategoryString } from "@/constants/categories";
 
 export const querySelectorConfig = {
     systemInstruction: `
@@ -24,10 +25,9 @@ export const querySelectorConfig = {
           date: string in YYYY-MM-DD format (default: "")
           period: "all" | "today" | "thisWeek" | "thisMonth" (default: "all")
 
-          Categories:
-            food, transport, shopping, entertainment, bills, housing, health, 
-            education, personal, insurance, travel, savings, debt, emergency, 
-            donations, salary, business, freelance, gifts, other_income, goals, other
+        Categories:
+          Expense Categories: ${expenseCategoryString}
+          Income Categories: ${incomeCategoryString}
 
 
         Queries:

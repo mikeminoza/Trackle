@@ -81,6 +81,7 @@ export default function TransactionFilter() {
             <Label>Category</Label>
             <CategoryFilter
               value={searchParams.get("category") ?? "all"}
+              type="all"
               onChange={(val) => setParam("category", val)}
             />
           </div>

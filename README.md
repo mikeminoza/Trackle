@@ -28,6 +28,7 @@ Easily manage all your income and expense records.
   - Manual entry for precise control
   - **Speak to Save** — add transactions with voice input
 - **Smart Filters**: Quickly search and organize transactions by date, category, or type.
+- **Export to XLSX**: Download your transaction history as an Excel file for easy reporting and backup.
 
 ### 3. Budget
 

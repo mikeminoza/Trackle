@@ -16,14 +16,18 @@ import { useState } from "react";
 
 export default function CategoryFilter({
   value,
+  type,
   onChange,
 }: {
   value: string;
+  type: "income" | "expense" | "all";
   onChange: (val: string) => void;
 }) {
   const [open, setOpen] = useState(false);
 
-  const selected = categories.find((c) => c.value === value);
+  const filteredCategories =
+    type === "all" ? categories : categories.filter((c) => c.type === type);
+  const selected = filteredCategories.find((c) => c.value === value);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -44,9 +48,9 @@ export default function CategoryFilter({
           <CommandList>
             <CommandEmpty>No category found.</CommandEmpty>
             <CommandGroup>
-              {categories.map((cat) => (
+              {filteredCategories.map((cat) => (
                 <CommandItem
-                  key={cat.value}
+                  key={`${cat.type}-${cat.value}`}
                   value={cat.value}
                   onSelect={(currentValue) => {
                     setOpen(false);

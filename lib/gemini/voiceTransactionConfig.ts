@@ -1,4 +1,5 @@
 import { Type } from "@google/genai";
+import { expenseCategoryString, incomeCategoryString } from "@/constants/categories";
 
 const currentDate = new Date();
 
@@ -18,10 +19,10 @@ export const voiceTransactionConfig = {
         "title": string (short description, e.g. "Jollibee meal"),
         "type": "income" | "expense",
       }
+
       Categories:
-        food, transport, shopping, entertainment, bills, housing, health, 
-        education, personal, insurance, travel, savings, debt, emergency, 
-        donations, salary, business, freelance, gifts, other_income, goals, other
+        Expense Categories: ${expenseCategoryString}
+        Income Categories: ${incomeCategoryString}
 
       Rules:
       1. Always output JSON matching the response schema.
