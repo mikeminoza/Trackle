@@ -61,6 +61,7 @@ export default function BudgetFilter() {
             <Label>Category</Label>
             <CategoryFilter
               value={searchParams.get("category") ?? "all"}
+              type="all"
               onChange={(val) => setParam("category", val)}
             />
           </div>

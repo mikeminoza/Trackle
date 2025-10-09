@@ -81,7 +81,11 @@ export default function BudgetDialog({
               >
                 Category
               </FormLabel>
-              <CategoryFilter value={category} onChange={(val) => form.setValue("category", val)} />
+              <CategoryFilter
+                value={category}
+                type="all"
+                onChange={(val) => form.setValue("category", val)}
+              />
               {form.formState.errors.category && (
                 <p data-slot="form-message" className="text-destructive text-sm">
                   {form.formState.errors.category.message}
