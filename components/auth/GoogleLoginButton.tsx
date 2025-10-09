@@ -11,7 +11,7 @@ export function GoogleLoginButton({ label }: { label: string }) {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_REDIRECT_CALLBACK}`,
+        redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
   };
