@@ -1,11 +1,11 @@
- import { ChatMessage } from "@/types/ai";
-import axios, { AxiosError } from "axios";
+import { ChatMessage } from "@/types/ai";
+import { AxiosError } from "axios";
+import { AxiosInstance } from "@/lib/axios";
 
-export function useSendMessage(userId?: string) { 
-
-  const sendMessage = async (messages: ChatMessage[], model: string) => { 
+export function useSendMessage(userId?: string) {
+  const sendMessage = async (messages: ChatMessage[], model: string) => {
     try {
-      const res = await axios.post("/api/ai/chat", { messages, model, userId });
+      const res = await AxiosInstance.post("/ai/chat", { messages, model, userId });
       return res.data.reply as string;
     } catch (err) {
       if (err instanceof AxiosError) {

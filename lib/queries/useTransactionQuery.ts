@@ -1,12 +1,13 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getTransactions } from "@/services/transaction";
+import { getTransactionsService } from "@/services/transaction";
 import { Transaction } from "@/types/db";
 import { TransactionFilters } from "@/types/transaction";
 
 export const useTransactionsQuery = (userId?: string, filters?: TransactionFilters, limit = 15) =>
   useInfiniteQuery<Transaction[], Error, Transaction[]>({
     queryKey: ["transactions", userId, filters, limit],
-    queryFn: ({ pageParam }) => getTransactions(userId!, pageParam as number, limit, filters),
+    queryFn: ({ pageParam }) =>
+      getTransactionsService({ userId: userId!, page: Number(pageParam ?? 0), limit, ...filters }),
     enabled: !!userId,
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
