@@ -1,56 +1,29 @@
-import { createClient } from "@/lib/supabase/client";
+import { AxiosInstance } from "@/lib/axios"; 
 import { AvailableYear } from "@/types/dashboard";
-import { FinancialSummary, SpendingBreakdown, TransactionAggregate } from "@/types/dashboard";
-import { Database } from "@/utils/database.types";
-import { SupabaseClient } from "@supabase/supabase-js";
+import { FinancialSummary, SpendingBreakdown, TransactionAggregate } from "@/types/dashboard"; 
+ 
+type DashboardAction =
+  | { type: "summary" }
+  | { type: "aggregates"; year: number }
+  | { type: "breakdown"; year: number; month: number }
+  | { type: "years" };
 
-const supabase = createClient();
-
-export async function getFinancialSummary(userId: string, client?: SupabaseClient<Database>) {
-  const supabaseClient = client ?? supabase;
-  const { data, error } = await supabaseClient.rpc("get_financial_summary", { p_user_id: userId });
-
-  if (error) throw error;
-  return data as FinancialSummary[];
-}
-
-export async function getTransactionAggregates(
+async function fetchDashboard<T>(
   userId: string,
-  year: number,
-  client?: SupabaseClient<Database>
-) {
-  const supabaseClient = client ?? supabase;
-  const { data, error } = await supabaseClient.rpc("get_transaction_aggregates_by_month", {
-    p_user_id: userId,
-    p_year: year,
-  });
-
-  if (error) throw error;
-  return data as TransactionAggregate[];
+  action: DashboardAction
+): Promise<T> {
+  const res = await AxiosInstance.post<{ data: T }>("/dashboard", { userId, ...action }); 
+  return res.data.data;
 }
 
-export async function getSpendingBreakdown(
-  userId: string,
-  year: number,
-  month: number,
-  client?: SupabaseClient<Database>
-) {
-  const supabaseClient = client ?? supabase;
-  const { data, error } = await supabaseClient.rpc("get_spending_breakdown", {
-    p_user_id: userId,
-    p_year: year,
-    p_month: month,
-  });
+export const getFinancialSummary = (userId: string) =>
+  fetchDashboard<FinancialSummary[]>(userId, { type: "summary" });
 
-  if (error) throw error;
-  return data as SpendingBreakdown[];
-}
+export const getTransactionAggregates = (userId: string, year: number) =>
+  fetchDashboard<TransactionAggregate[]>(userId, { type: "aggregates", year });
 
-export async function getAvailableYears(userId: string) {
-  const { data, error } = await supabase.rpc("get_available_transaction_years", {
-    p_user_id: userId,
-  });
+export const getSpendingBreakdown = (userId: string, year: number, month: number) =>
+  fetchDashboard<SpendingBreakdown[]>(userId, { type: "breakdown", year, month });
 
-  if (error) throw error;
-  return data as AvailableYear[];
-}
+export const getAvailableYears = (userId: string) =>
+  fetchDashboard<AvailableYear[]>(userId, { type: "years" });
