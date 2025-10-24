@@ -1,6 +1,7 @@
 "use client";
 
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import { AxiosInstance } from "@/lib/axios";
 import { useState } from "react";
 
 type ExportFormat = "xlsx" | "json";
@@ -24,13 +25,13 @@ export function useExportTransactions() {
       setIsExporting(true);
       setError(null);
 
-      const response = await axios.get<Blob>("/api/export", {
+      const response = await AxiosInstance.get<Blob>("/export", {
         params: { userId, format },
         responseType: "blob",
         validateStatus: (status) => status < 500,
       });
 
-      if (response.status === 204) { 
+      if (response.status === 204) {
         return { success: false, empty: true };
       }
 

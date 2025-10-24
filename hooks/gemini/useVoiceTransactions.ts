@@ -1,5 +1,6 @@
 import { Transaction } from "@/types/db";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import { AxiosInstance } from "@/lib/axios";
 
 interface VoiceTransactionResponse {
   transactions: Transaction[];
@@ -8,7 +9,7 @@ interface VoiceTransactionResponse {
 export function useVoiceTransactions() {
   const generateTransactions = async (transcript: string) => {
     try {
-      const res = await axios.post("/api/ai/transaction", { input: transcript });
+      const res = await AxiosInstance.post("/ai/transaction", { input: transcript });
       return res.data as VoiceTransactionResponse;
     } catch (err) {
       if (err instanceof AxiosError) {

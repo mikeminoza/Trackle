@@ -1,17 +1,12 @@
 import { NextResponse } from "next/server";
 import { ChatMessage } from "@/types/ai";
 import { models } from "@/constants/ai-models"; 
-import { GoogleGenAI } from "@google/genai";
-import {
-  getFinancialSummary,
-  getSpendingBreakdown,
-  getTransactionAggregates,
-} from "@/services/dashboard";
-import { getBudgets, getBudgetSummary } from "@/services/budget";
-import { getTransactions } from "@/services/transaction";
-import { supabaseAdmin } from "@/lib/supabase/adminClient";
+import { GoogleGenAI } from "@google/genai"; 
+import { getBudgetsService, getBudgetSummaryService } from "@/services/budget";
+import { getTransactionsService } from "@/services/transaction"; 
 import { chatConfig } from "@/lib/gemini/chatConfig";
 import { querySelectorConfig } from "@/lib/gemini/querySelectorConfig";
+import { handleDashboardAction } from "@/services/dashboardHandler";
 
 export async function POST(req: Request) {
   try {
@@ -41,38 +36,43 @@ export async function POST(req: Request) {
       },
       contents: lastMessage.content,
     });
-
+ 
     if (!querySelector.text) {
       return NextResponse.json({ error: "Failed to generate query" }, { status: 400 });
     }
 
     const queryJson = JSON.parse(querySelector.text);
-
-    let fetchedData;
+    
+    let fetchedData;  
     switch (queryJson.query) {
       case "financialSummary":
-        fetchedData = await getFinancialSummary(userId, supabaseAdmin);
+        fetchedData = await handleDashboardAction(userId, { type: "summary" });
         break;
+
       case "transactionAggregates":
-        fetchedData = await getTransactionAggregates(userId, queryJson.params.year, supabaseAdmin);
+        fetchedData = await handleDashboardAction(userId, { type: "aggregates", year: queryJson.params.year });
         break;
+
       case "spendingBreakdown":
-        fetchedData = await getSpendingBreakdown(
-          userId!,
-          queryJson.params.year,
-          queryJson.params.month,
-          supabaseAdmin
-        );
+        fetchedData = await handleDashboardAction(userId, { type: "breakdown", year: queryJson.params.year, month: queryJson.params.month });
         break;
+
+      case "years":
+        fetchedData = await handleDashboardAction(userId, { type: "years" });
+        break;
+
       case "budgets":
-        fetchedData = await getBudgets(userId, queryJson.params, supabaseAdmin);
+        fetchedData = await getBudgetsService({ userId, ...queryJson.params });
         break;
+
       case "budgetSummary":
-        fetchedData = await getBudgetSummary(userId, queryJson.params, supabaseAdmin);
+        fetchedData = await getBudgetSummaryService({ userId, ...queryJson.params });
         break;
+
       case "transactions":
-        fetchedData = await getTransactions(userId, 0, 15, queryJson.params, supabaseAdmin);
+        fetchedData = await getTransactionsService({ userId, page: 0, limit: 15, ...queryJson.params });
         break;
+
       default:
         fetchedData = {};
     }

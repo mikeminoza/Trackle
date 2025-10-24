@@ -1,11 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBudgets } from "@/services/budget";
+import { getBudgetsService } from "@/services/budget";
 import { BudgetFilters, BudgetWithSpent } from "@/types/budget";
 
 export const useBudgetQuery = (userId?: string, filters?: BudgetFilters) =>
   useQuery<BudgetWithSpent[], Error>({
     queryKey: ["budgets", userId, filters],
-    queryFn: () => getBudgets(userId!, filters),
+    queryFn: () =>
+      getBudgetsService({
+        userId: userId!,
+        ...filters,
+      }),
     enabled: !!userId,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 60,
