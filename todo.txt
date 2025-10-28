@@ -1,5 +1,3 @@
 TODO
-  
-1. Remove all the console 
-2. Save the query (chatbot) in local using zustand   
- 
+
+1. Save the query (chatbot) in local using zustand     
