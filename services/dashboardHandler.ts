@@ -24,8 +24,7 @@ export async function handleDashboardAction(
     case "summary": {
       const { data, error } = await supabase
         .rpc("get_financial_summary", { p_user_id: userId });
-      if (error) throw error;
-      console.log(`DATA: ${JSON.stringify(data)}`);
+      if (error) throw error; 
       return data ?? [];
     }
     case "aggregates": {

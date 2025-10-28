@@ -90,7 +90,8 @@ export async function POST(req: Request) {
       config: {
         systemInstruction: `
           ${chatConfig.systemInstruction}
-          User data (for context, do not repeat unless relevant):
+          User data (for context, do not repeat unless relevant)
+          If there is not data, state clearly: "I don’t have enough data to provide an accurate answer."
           ${systemData}
         `,
       },
