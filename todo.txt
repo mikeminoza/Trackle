@@ -2,3 +2,4 @@ TODO
 
 1. Save the query (chatbot) in local using zustand     
 2. Fix(budget) Instead of getting the budget for this month, get all the budget 
+3. Improve UI design
